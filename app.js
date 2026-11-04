@@ -25,7 +25,7 @@ function downloadLink(app) {
   return `<a class="primary" href="${escapeHTML(destination(app))}" download="${escapeHTML(app.fileName)}" data-download="${app.id}">${app.fileName.endsWith('.zip') ? '下载 ZIP' : '下载安装包'} <span aria-hidden="true">↓</span></a>`;
 }
 // 保留卡片节点，筛选时只切换显示，避免图标重建和焦点丢失。
-$('#cards').innerHTML = software.map(app => `<article class="card" data-app="${escapeHTML(app.id)}"><div class="card-top">${icon(app)}<div><h3>${escapeHTML(app.name)}</h3></div><button class="favorite" data-favorite="${app.id}" aria-pressed="${favorites.has(app.id)}" aria-label="${favorites.has(app.id) ? '取消收藏' : '收藏'} ${app.name}">${favorites.has(app.id) ? '★' : '☆'}</button></div><p class="description">${escapeHTML(app.description)}</p><div class="card-bottom"><div class="file-meta"><span>${escapeHTML(app.platform)}${app.localSize ? ' · ' + escapeHTML(app.localSize) : ''}</span></div><div class="card-actions"><button class="details-button" data-detail="${app.id}">详情</button>${downloadLink(app)}</div></div></article>`).join('');
+$('#cards').innerHTML = software.map(app => `<article class="card" data-app="${escapeHTML(app.id)}"><div class="card-top">${icon(app)}<div><h3>${escapeHTML(app.name)}</h3></div><button class="favorite" data-favorite="${app.id}" aria-pressed="${favorites.has(app.id)}" aria-label="${favorites.has(app.id) ? '取消收藏' : '收藏'} ${app.name}">${favorites.has(app.id) ? '★' : '☆'}</button></div><p class="description">${escapeHTML(app.description)}</p><div class="tags">${app.tags.map(tag => `<span class="tag">${escapeHTML(tag)}</span>`).join('')}</div><div class="card-bottom"><div class="file-meta"><span>${escapeHTML(app.platform)} · ${escapeHTML(app.usage)}</span><span>${app.downloadNote ? '百度网盘' : app.localSize ? '加密包 ' + escapeHTML(app.localSize) : '官网下载'}</span></div><div class="card-actions"><button class="details-button" data-detail="${app.id}">详情</button>${downloadLink(app)}</div></div></article>`).join('');
 function render() {
   const query = $('#search').value.trim().toLocaleLowerCase();
   const apps = software.filter(app => (filter === 'all' || (filter === 'favorites' ? favorites.has(app.id) : app.category === filter)) && [app.name, app.category, app.description, ...app.tags].join(' ').toLocaleLowerCase().includes(query));
@@ -53,7 +53,7 @@ function toast(message) {
   toastTimer = setTimeout(() => $('#toast').classList.remove('visible'), 3000);
 }
 function showDetail(app) {
-  $('#dialog-content').innerHTML = `${icon(app)}<h2 id="dialog-title">${escapeHTML(app.name)}</h2><p>${escapeHTML(app.description)}</p><div class="tags">${app.tags.map(tag => `<span class="tag">${escapeHTML(tag)}</span>`).join('')}</div><p>${escapeHTML(app.platform)} · ${escapeHTML(app.usage)}${app.localSize ? ' · 加密包 ' + escapeHTML(app.localSize) : ''}</p><p>${escapeHTML(app.tips)}</p><p class="notice">${escapeHTML(app.note)}</p>${downloadLink(app)}`;
+  $('#dialog-content').innerHTML = `${icon(app)}<h2 id="dialog-title">${escapeHTML(app.name)}</h2><p>${escapeHTML(app.description)}</p><p>${escapeHTML(app.tips)}</p><p class="notice">${escapeHTML(app.note)}</p>${downloadLink(app)}`;
   $('#detail').showModal();
 }
 document.addEventListener('click', event => {
