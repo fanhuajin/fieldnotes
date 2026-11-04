@@ -1,0 +1,5 @@
+/.packaging/
+# 历史本地运行包不纳入版本控制。
+/downloads/Apache-JMeter-5.6.3-Windows-x64-含Java.zip
+# 下载包通过 Releases 发布，本地副本不提交。
+/downloads/*.zip

@@ -1,0 +1,92 @@
+const $ = (selector) => document.querySelector(selector);
+const storage = {
+  get(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } },
+  set(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); return true; } catch { return false; } },
+};
+const storedFavorites = storage.get('shelf-favorites', []);
+const favorites = new Set(Array.isArray(storedFavorites) ? storedFavorites.filter(id => software.some(app => app.id === id)) : []);
+const categoryNames = {'写作':'写作记录','截图':'截图贴图','远程':'远程连接','录屏':'屏幕录制','开发':'开发测试','网络':'网络工具'};
+let filter = 'all';
+let toastTimer;
+const escapeHTML = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+$('.filters').innerHTML = '<button data-filter="all" aria-pressed="true">全部软件</button>' + [...new Set(software.map(app => app.category))].map(category => `<button data-filter="${escapeHTML(category)}" aria-pressed="false">${escapeHTML(categoryNames[category] || category)}</button>`).join('') + '<button data-filter="favorites" aria-pressed="false">我的收藏 <span id="favorite-count">0</span></button>';
+// 官网图标随页面本地保存；意外加载失败时保留文字标识。
+document.addEventListener('error', event => {
+  if (event.target.matches?.('.app-icon img')) event.target.classList.add('failed');
+}, true);
+function destination(app) {
+  if (app.releaseUrl && window.location.protocol !== 'file:') return app.releaseUrl;
+  return app.fileName ? `./downloads/${encodeURIComponent(app.fileName)}` : app.website;
+}
+function icon(app) { return `<span class="app-icon ${escapeHTML(app.id)}" aria-hidden="true"><span class="icon-fallback">${escapeHTML(app.name.slice(0, 1))}</span><img src="${escapeHTML(app.icon)}" alt="" width="48" height="48"></span>`; }
+function downloadLink(app) {
+  if (app.downloadNote) return `<span class="text-button">${escapeHTML(app.downloadNote)}</span>`;
+  if (!app.fileName) return `<a class="primary" href="${escapeHTML(destination(app))}" target="_blank" rel="noopener noreferrer">前往官网下载 <span aria-hidden="true">↗</span></a>`;
+  return `<a class="primary" href="${escapeHTML(destination(app))}" download="${escapeHTML(app.fileName)}" data-download="${app.id}">${app.fileName.endsWith('.zip') ? '下载 ZIP' : '下载安装包'} <span aria-hidden="true">↓</span></a>`;
+}
+function render() {
+  const query = $('#search').value.trim().toLocaleLowerCase();
+  const apps = software.filter(app => (filter === 'all' || (filter === 'favorites' ? favorites.has(app.id) : app.category === filter)) && [app.name, app.category, app.description, ...app.tags].join(' ').toLocaleLowerCase().includes(query));
+  $('#total').textContent = String(software.length).padStart(2, '0');
+  $('#favorite-count').textContent = favorites.size;
+  $('#result-status').textContent = `找到 ${apps.length} 个软件`;
+  $('#cards').innerHTML = apps.map(app => `<article class="card"><div class="card-top">${icon(app)}<div><h3>${escapeHTML(app.name)}</h3><p class="subtitle">${escapeHTML(app.subtitle)}</p></div><button class="favorite" data-favorite="${app.id}" aria-pressed="${favorites.has(app.id)}" aria-label="${favorites.has(app.id) ? '取消收藏' : '收藏'} ${app.name}">${favorites.has(app.id) ? '★' : '☆'}</button></div><p class="description">${escapeHTML(app.description)}</p><div class="tags">${app.tags.map(tag => `<span class="tag">${escapeHTML(tag)}</span>`).join('')}</div><div class="card-bottom"><div class="file-meta"><span>${escapeHTML(app.platform)} · ${escapeHTML(app.usage)}</span><span>${app.downloadNote ? '百度网盘' : app.localSize ? '加密包 ' + escapeHTML(app.localSize) : '官网下载'}</span></div><div class="card-actions"><button class="details-button" data-detail="${app.id}">详情</button>${downloadLink(app)}</div></div></article>`).join('');
+  $('#empty').hidden = apps.length > 0;
+  $('#empty-text').textContent = query ? '没有匹配的结果，试试其他关键词。' : '点击软件卡片上的星星，把顺手的工具留在这里。';
+  document.querySelectorAll('[data-filter]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === filter)));
+}
+function toast(message) {
+  clearTimeout(toastTimer);
+  $('#toast').textContent = message;
+  $('#toast').classList.add('visible');
+  toastTimer = setTimeout(() => $('#toast').classList.remove('visible'), 3000);
+}
+function showDetail(app) {
+  $('#dialog-content').innerHTML = `${icon(app)}<h2 id="dialog-title">${escapeHTML(app.name)}</h2><p>${escapeHTML(app.description)}</p><p>${escapeHTML(app.tips)}</p><p class="notice">${escapeHTML(app.note)}</p>${downloadLink(app)}`;
+  $('#detail').showModal();
+}
+document.addEventListener('click', event => {
+  const button = event.target.closest('button, a');
+  if (!button) return;
+  if (button.dataset.filter) { filter = button.dataset.filter; render(); }
+  if (button.dataset.favorite) {
+    const id = button.dataset.favorite;
+    favorites.has(id) ? favorites.delete(id) : favorites.add(id);
+    const saved = storage.set('shelf-favorites', [...favorites]);
+    render();
+    const replacement = document.querySelector(`[data-favorite="${id}"]`);
+    (replacement || $('[data-filter="favorites"]')).focus();
+    toast(saved ? (favorites.has(id) ? '已加入你的收藏' : '已取消收藏') : '已更新本次收藏；浏览器未允许保存');
+  }
+  if (button.dataset.detail) showDetail(software.find(app => app.id === button.dataset.detail));
+  if (button.dataset.download) {
+    toast('已请求下载安装包，请查看浏览器下载列表');
+  }
+});
+$('#search').addEventListener('input', render);
+$('#reset').addEventListener('click', () => { filter = 'all'; $('#search').value = ''; render(); $('#search').focus(); });
+$('#close-dialog').addEventListener('click', () => $('#detail').close());
+$('#detail').addEventListener('click', event => {
+  const rect = $('#detail').getBoundingClientRect();
+  if (event.target === $('#detail') && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) $('#detail').close();
+});
+$('#about').addEventListener('click', () => {
+  $('#dialog-content').innerHTML = '<p class="eyebrow">ABOUT SOFT SHELF</p><h2 id="dialog-title">用得顺手，才值得收藏。</h2><p>SoftShelf，是我的个人软件架。这里整理日常使用的写作与效率工具，希望每次换电脑、找工具时，都能少绕一点路。</p><p class="notice">软件属于各自作者。这里提供本站保存的软件包，点击即可下载；收藏保存在当前浏览器中。</p>';
+  $('#detail').showModal();
+});
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  $('#theme').setAttribute('aria-label', theme === 'dark' ? '切换浅色主题' : '切换深色主题');
+  $('#theme').setAttribute('aria-pressed', String(theme === 'dark'));
+}
+const savedTheme = storage.get('shelf-theme', null);
+applyTheme(['dark','light'].includes(savedTheme) ? savedTheme : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+$('#theme').addEventListener('click', () => {
+  const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  applyTheme(theme); storage.set('shelf-theme', theme);
+});
+document.addEventListener('keydown', event => {
+  if (event.key === '/' && !event.ctrlKey && !event.metaKey && !event.altKey && !$('#detail').open && !event.target.closest('input, textarea, [contenteditable]')) { event.preventDefault(); $('#search').focus(); }
+});
+$('#back-top').addEventListener('click', event => { event.preventDefault(); window.scrollTo({top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'}); $('.brand').focus({preventScroll:true}); });
+render();
