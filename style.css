@@ -20,19 +20,19 @@ nav{display:flex;align-items:center;gap:12px}
 .text-button:hover{color:var(--accent)}
 .icon-button{display:inline-grid;place-items:center;width:44px;height:44px;background:transparent;border:1px solid var(--line);border-radius:8px;font-size:22px}
 .icon-button:hover{background:var(--soft)}
-.library{padding-top:32px}
-.section-heading{display:flex;align-items:center;justify-content:space-between;gap:24px}
-.section-heading h1{margin:0;font-size:24px;line-height:1.35;font-weight:650;letter-spacing:-.5px}
+.library{padding-top:20px}
+.section-heading{display:flex;align-items:center;gap:24px}
+.section-heading h1{flex-shrink:0;margin:0;font-size:20px;line-height:1.35;font-weight:650;letter-spacing:-.5px}
 #total{display:inline-block;vertical-align:middle;margin-left:8px;padding:2px 7px;border-radius:5px;background:var(--soft);color:var(--accent);font:12px/1.5 monospace;letter-spacing:0}
-.section-note{margin:6px 0 0;color:var(--muted);font-size:12px}
-.search-box{display:flex;align-items:center;gap:10px;width:310px;min-height:44px;padding:0 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.result-summary{flex-shrink:0;margin:0 0 0 auto;color:var(--muted);font-size:11px}
+.search-box{display:flex;flex:1;align-items:center;gap:10px;max-width:520px;min-width:180px;min-height:44px;padding:0 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
 .search-box>svg{flex-shrink:0;width:16px;height:16px;fill:none;stroke:var(--muted);stroke-width:1.7;stroke-linecap:round}
 .search-box input{flex:1;min-width:0;width:100%;min-height:42px;padding:0;border:0;background:transparent;font-size:12px;line-height:20px}
 .search-box input::placeholder{color:var(--muted);opacity:1}
 .search-box:focus-within{outline:3px solid var(--accent);outline-offset:3px}
 .search-box input:focus-visible{outline:none}
 kbd{min-width:18px;padding:0 4px;border:1px solid var(--line);border-radius:4px;color:var(--muted);font:11px/1.6 monospace;text-align:center}
-.toolbar{padding:20px 0 24px}
+.toolbar{padding:12px 0 16px}
 .filters{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
 .filters button{flex-shrink:0;min-height:40px;padding:8px 12px;border-radius:6px;background:transparent;color:var(--muted);font-size:12px;white-space:nowrap}
 .filters button:hover{background:var(--soft);color:var(--accent)}
@@ -89,11 +89,8 @@ dialog .primary{margin-top:8px}
   .brand{font-size:18px}
   .brand small{font-size:9px}
   nav{gap:6px}
-  .library{padding-top:24px}
-  .section-heading{align-items:stretch;flex-direction:column;gap:18px}
-  .section-heading h1{font-size:23px}
-  .search-box{width:100%}
-  .toolbar{padding:16px 0 20px}
+  .section-heading{flex-wrap:wrap;gap:12px}
+  .search-box{order:1;flex-basis:100%;max-width:none;min-width:0}
   .filters{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}
   .filters button{min-height:44px;padding-inline:11px;font-size:11px}
   .cards{grid-template-columns:1fr;gap:12px}
