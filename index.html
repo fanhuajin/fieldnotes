@@ -6,9 +6,9 @@
   <meta name="description" content="一份用得顺手的软件收藏。发现、收藏与下载你的日常工具。">
   <title>SoftShelf · 我的软件架</title>
   <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg?v=420fd7c47180">
-  <link rel="stylesheet" href="./style.css?v=cd7670f09946">
+  <link rel="stylesheet" href="./style.css?v=05e897b6b612">
   <script src="./software.js?v=82717e922b45" defer></script>
-  <script src="./app.js?v=b5803f5a5bcd" defer></script>
+  <script src="./app.js?v=5c89e08bcb5f" defer></script>
 </head>
 <body>
   <a class="skip" href="#library">跳至软件列表</a>
@@ -21,11 +21,10 @@
   <main class="wrap">
     <section id="library" class="library" aria-labelledby="library-title">
       <div class="section-heading">
-        <h1 id="library-title">软件库 <span id="total"></span></h1>
+        <div class="library-intro"><h1 id="library-title">软件库 <span id="total"></span></h1><p>用得顺手的工具，整理在这里。</p></div>
         <div class="search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg><label class="sr-only" for="search">搜索软件</label><input id="search" type="search" placeholder="搜索软件、功能或标签" autocomplete="off"><kbd aria-hidden="true">/</kbd></div>
-        <p id="result-status" class="result-summary" role="status"></p>
       </div>
-      <div class="toolbar"><div class="filters" role="group" aria-label="筛选软件"><button data-filter="all" aria-pressed="true">全部软件</button></div></div>
+      <div class="toolbar"><div class="filters" role="group" aria-label="筛选软件"><button data-filter="all" aria-pressed="true">全部软件</button></div><p id="result-status" class="result-summary" role="status"></p></div>
       <div id="cards" class="cards"></div>
       <div id="empty" class="empty" hidden><span aria-hidden="true">⌕</span><h3>这里暂时空空的</h3><p id="empty-text"></p><button id="reset" class="secondary">查看全部软件</button></div>
     </section>
