@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="一份用得顺手的软件收藏。发现、收藏与下载你的日常工具。">
+  <meta name="description" content="一份用得顺手的软件收藏。查找与下载日常使用的工具。">
   <title>SoftShelf · 我的软件架</title>
   <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg?v=420fd7c47180">
-  <link rel="stylesheet" href="./style.css?v=0c2bbb5544d3">
+  <link rel="stylesheet" href="./style.css?v=0b44b1daff19">
   <script src="./software.js?v=82717e922b45" defer></script>
-  <script src="./app.js?v=67b7cc3deb56" defer></script>
+  <script src="./app.js?v=e5dbae37ca4c" defer></script>
 </head>
 <body>
   <a class="skip" href="#library">跳至软件列表</a>
@@ -21,7 +21,7 @@
   <main class="wrap">
     <section id="library" class="library" aria-labelledby="library-title">
       <div class="section-heading">
-        <h1 id="library-title">软件库</h1>
+        <h1 id="library-title">软件库 <span id="total" class="library-count"></span></h1>
         <div class="search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg><label class="sr-only" for="search">搜索软件</label><input id="search" type="search" placeholder="搜索软件、功能或标签" autocomplete="off"><kbd aria-hidden="true">/</kbd></div>
       </div>
       <div class="toolbar"><div class="filters" role="group" aria-label="筛选软件"><button data-filter="all" aria-pressed="true">全部软件</button></div></div>

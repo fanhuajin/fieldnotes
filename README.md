@@ -2,18 +2,18 @@
 
 一个简洁的个人软件收藏与下载页面，整理日常使用的写作、截图、远程、录屏、开发和网络工具。
 
-界面布局参考开源项目 [Homer](https://github.com/bastienwirtz/homer) 的紧凑分组卡片方式，以现有 HTML、CSS 和原生 JavaScript 实现，保留搜索、分类、收藏及下载能力。
+界面布局参考开源项目 [Homer](https://github.com/bastienwirtz/homer) 的紧凑分组卡片方式，以现有 HTML、CSS 和原生 JavaScript 实现，保留搜索、分类及下载能力。
 
 [访问网站](https://fanhuajin.github.io/soft-shelf/)
 
 ## 功能
 
 - 按软件名称、用途和标签搜索，按分类筛选。
-- 收藏常用软件，支持深浅主题。
+- 支持深浅主题。
 - 查看软件说明，直接下载本项目保存的软件包。
 - 适配桌面与手机，支持键盘操作和减少动态效果设置。
 
-收藏与主题偏好保存在当前浏览器，无需登录。
+主题偏好保存在当前浏览器，无需登录。
 
 ## 软件与使用方式
 
@@ -48,7 +48,7 @@ Topaz Video AI 与剪映的原始 RAR 内容保持不变，外层 ZIP 与内层 
 页面使用 HTML、CSS 和原生 JavaScript，无需安装依赖或构建。
 
 - `software.js`：软件名称、版本说明、分类、图标和下载文件。
-- `app.js`：搜索、筛选、收藏、主题及下载交互。
+- `app.js`：搜索、筛选、主题及下载交互。
 - `style.css`：页面样式与响应式布局。
 - `assets/`：软件图标。
 - `downloads/`：加密软件包的本地副本，不纳入 Git 提交。

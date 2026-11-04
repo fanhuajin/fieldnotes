@@ -3,13 +3,11 @@ const storage = {
   get(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } },
   set(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); return true; } catch { return false; } },
 };
-const storedFavorites = storage.get('shelf-favorites', []);
-const favorites = new Set(Array.isArray(storedFavorites) ? storedFavorites.filter(id => software.some(app => app.id === id)) : []);
 const categoryNames = {'写作':'写作记录','截图':'截图贴图','远程':'远程连接','录屏':'屏幕录制','开发':'开发测试','网络':'网络工具','视频':'视频工具','浏览器':'浏览器扩展'};
 let filter = 'all';
 let toastTimer;
 const escapeHTML = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-$('.filters').innerHTML = '<button data-filter="all" aria-pressed="true">全部软件</button>' + [...new Set(software.map(app => app.category))].map(category => `<button data-filter="${escapeHTML(category)}" aria-pressed="false">${escapeHTML(categoryNames[category] || category)}</button>`).join('') + '<button data-filter="favorites" aria-pressed="false">我的收藏 <span id="favorite-count">0</span></button>';
+$('.filters').innerHTML = '<button data-filter="all" aria-pressed="true">全部软件</button>' + [...new Set(software.map(app => app.category))].map(category => `<button data-filter="${escapeHTML(category)}" aria-pressed="false">${escapeHTML(categoryNames[category] || category)}</button>`).join('');
 // 官网图标随页面本地保存；意外加载失败时保留文字标识。
 document.addEventListener('error', event => {
   if (event.target.matches?.('.app-icon img')) event.target.classList.add('failed');
@@ -25,23 +23,18 @@ function downloadLink(app) {
   return `<a class="primary" href="${escapeHTML(destination(app))}" download="${escapeHTML(app.fileName)}" data-download="${app.id}">${app.fileName.endsWith('.zip') ? '下载 ZIP' : '下载安装包'} <span aria-hidden="true">↓</span></a>`;
 }
 // 保留卡片节点，筛选时只切换显示，避免图标重建和焦点丢失。
-$('#cards').innerHTML = software.map(app => `<article class="card" data-app="${escapeHTML(app.id)}"><div class="card-top">${icon(app)}<div><h3>${escapeHTML(app.name)}</h3></div><button class="favorite" data-favorite="${app.id}" aria-pressed="${favorites.has(app.id)}" aria-label="${favorites.has(app.id) ? '取消收藏' : '收藏'} ${app.name}">${favorites.has(app.id) ? '★' : '☆'}</button></div><p class="description">${escapeHTML(app.description)}</p><div class="tags">${app.tags.map(tag => `<span class="tag">${escapeHTML(tag)}</span>`).join('')}</div><div class="card-bottom"><div class="file-meta"><span>${escapeHTML(app.platform)} · ${escapeHTML(app.usage)}</span><span>${app.downloadNote ? '百度网盘' : app.localSize ? '加密包 ' + escapeHTML(app.localSize) : '官网下载'}</span></div><div class="card-actions"><button class="details-button" data-detail="${app.id}">详情</button>${downloadLink(app)}</div></div></article>`).join('');
+$('#cards').innerHTML = software.map(app => `<article class="card" data-app="${escapeHTML(app.id)}"><div class="card-top">${icon(app)}<div><h3>${escapeHTML(app.name)}</h3></div></div><p class="description">${escapeHTML(app.description)}</p><div class="tags">${app.tags.map(tag => `<span class="tag">${escapeHTML(tag)}</span>`).join('')}</div><div class="card-bottom"><div class="file-meta"><span>${escapeHTML(app.platform)} · ${escapeHTML(app.usage)}</span><span>${app.downloadNote ? '百度网盘' : app.localSize ? '加密包 ' + escapeHTML(app.localSize) : '官网下载'}</span></div><div class="card-actions"><button class="details-button" data-detail="${app.id}">详情</button>${downloadLink(app)}</div></div></article>`).join('');
 function render() {
   const query = $('#search').value.trim().toLocaleLowerCase();
-  const apps = software.filter(app => (filter === 'all' || (filter === 'favorites' ? favorites.has(app.id) : app.category === filter)) && [app.name, app.category, app.description, ...app.tags].join(' ').toLocaleLowerCase().includes(query));
-  $('#favorite-count').textContent = favorites.size;
+  const apps = software.filter(app => (filter === 'all' || app.category === filter) && [app.name, app.category, app.description, ...app.tags].join(' ').toLocaleLowerCase().includes(query));
+  $('#total').textContent = `${software.length} 款`;
+  $('#total').setAttribute('aria-label', `共 ${software.length} 款软件`);
   const visibleIds = new Set(apps.map(app => app.id));
   document.querySelectorAll('#cards .card').forEach(card => {
     card.hidden = !visibleIds.has(card.dataset.app);
-    const button = card.querySelector('[data-favorite]');
-    const app = software.find(app => app.id === card.dataset.app);
-    const selected = favorites.has(app.id);
-    button.textContent = selected ? '★' : '☆';
-    button.setAttribute('aria-pressed', String(selected));
-    button.setAttribute('aria-label', `${selected ? '取消收藏' : '收藏'} ${app.name}`);
   });
   $('#empty').hidden = apps.length > 0;
-  $('#empty-text').textContent = query ? '没有匹配的结果，试试其他关键词。' : '点击软件卡片上的星星，把顺手的工具留在这里。';
+  $('#empty-text').textContent = query ? '没有匹配的结果，试试其他关键词。' : '这个分类暂时没有软件，试试其他分类。';
   document.querySelectorAll('[data-filter]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === filter)));
 }
 function toast(message) {
@@ -58,14 +51,6 @@ document.addEventListener('click', event => {
   const button = event.target.closest('button, a');
   if (!button) return;
   if (button.dataset.filter) { filter = button.dataset.filter; render(); }
-  if (button.dataset.favorite) {
-    const id = button.dataset.favorite;
-    favorites.has(id) ? favorites.delete(id) : favorites.add(id);
-    const saved = storage.set('shelf-favorites', [...favorites]);
-    render();
-    if (button.closest('[hidden]')) $('[data-filter="favorites"]').focus();
-    toast(saved ? (favorites.has(id) ? '已加入你的收藏' : '已取消收藏') : '已更新本次收藏；浏览器未允许保存');
-  }
   if (button.dataset.detail) showDetail(software.find(app => app.id === button.dataset.detail));
   if (button.dataset.download) {
     toast('已请求下载安装包，请查看浏览器下载列表');
@@ -79,7 +64,7 @@ $('#detail').addEventListener('click', event => {
   if (event.target === $('#detail') && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) $('#detail').close();
 });
 $('#about').addEventListener('click', () => {
-  $('#dialog-content').innerHTML = '<p class="eyebrow">ABOUT SOFT SHELF</p><h2 id="dialog-title">关于 SoftShelf</h2><p>SoftShelf，是我的个人软件架。这里整理常用的软件与工具，方便查找、收藏和下载。</p><p class="notice">软件属于各自作者。这里提供本站保存的软件包，点击即可下载；收藏保存在当前浏览器中。</p>';
+  $('#dialog-content').innerHTML = '<p class="eyebrow">ABOUT SOFT SHELF</p><h2 id="dialog-title">关于 SoftShelf</h2><p>SoftShelf，是我的个人软件架。这里整理常用的软件与工具，方便查找和下载。</p><p class="notice">软件属于各自作者。这里提供本站保存的软件包，点击即可下载。</p>';
   $('#detail').showModal();
 });
 function applyTheme(theme) {
