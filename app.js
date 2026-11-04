@@ -51,7 +51,7 @@ function toast(message) {
   toastTimer = setTimeout(() => $('#toast').classList.remove('visible'), 3000);
 }
 function showDetail(app) {
-  $('#dialog-content').innerHTML = `${icon(app)}<h2 id="dialog-title">${escapeHTML(app.name)}</h2><p>${escapeHTML(app.description)}</p><p>${escapeHTML(app.tips)}</p><p class="notice">${escapeHTML(app.note)}</p>${downloadLink(app)}`;
+  $('#dialog-content').innerHTML = `${icon(app)}<h2 id="dialog-title">${escapeHTML(app.name)}</h2><p>${escapeHTML(app.description)}</p><p>${escapeHTML(app.tips)}</p><p class="notice">${escapeHTML(app.note)}</p><div class="dialog-actions">${downloadLink(app)}</div>`;
   $('#detail').showModal();
 }
 document.addEventListener('click', event => {
