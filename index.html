@@ -6,9 +6,9 @@
   <meta name="description" content="一份用得顺手的软件收藏。查找与下载日常使用的工具。">
   <title>SoftShelf · 我的软件架</title>
   <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg?v=420fd7c47180">
-  <link rel="stylesheet" href="./style.css?v=0b44b1daff19">
+  <link rel="stylesheet" href="./style.css?v=625f37534886">
   <script src="./software.js?v=82717e922b45" defer></script>
-  <script src="./app.js?v=e5dbae37ca4c" defer></script>
+  <script src="./app.js?v=7025ced5a987" defer></script>
 </head>
 <body>
   <a class="skip" href="#library">跳至软件列表</a>
@@ -24,7 +24,7 @@
         <h1 id="library-title">软件库 <span id="total" class="library-count"></span></h1>
         <div class="search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg><label class="sr-only" for="search">搜索软件</label><input id="search" type="search" placeholder="搜索软件、功能或标签" autocomplete="off"><kbd aria-hidden="true">/</kbd></div>
       </div>
-      <div class="toolbar"><div class="filters" role="group" aria-label="筛选软件"><button data-filter="all" aria-pressed="true">全部软件</button></div></div>
+      <div class="toolbar"><div class="filters" role="group" aria-label="筛选软件"><button data-filter="all" aria-pressed="true">全部软件</button></div><div class="batch-actions"><span id="selection-count" role="status">已选 0 项</span><button id="clear-selection" class="text-button" disabled>清空</button><button id="download-selected" class="primary" disabled>下载选中</button></div></div>
       <div id="cards" class="cards"></div>
       <div id="empty" class="empty" hidden><span aria-hidden="true">⌕</span><h3>这里暂时空空的</h3><p id="empty-text"></p><button id="reset" class="secondary">查看全部软件</button></div>
     </section>
