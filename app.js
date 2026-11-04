@@ -24,13 +24,25 @@ function downloadLink(app) {
   if (!app.fileName) return `<a class="primary" href="${escapeHTML(destination(app))}" target="_blank" rel="noopener noreferrer">前往官网下载 <span aria-hidden="true">↗</span></a>`;
   return `<a class="primary" href="${escapeHTML(destination(app))}" download="${escapeHTML(app.fileName)}" data-download="${app.id}">${app.fileName.endsWith('.zip') ? '下载 ZIP' : '下载安装包'} <span aria-hidden="true">↓</span></a>`;
 }
+$('#hero-apps').innerHTML = software.map(app => `<div class="shelf-app" title="${escapeHTML(app.name)}"><img src="${escapeHTML(app.icon)}" alt="" width="32" height="32"><span>${escapeHTML(app.name)}</span></div>`).join('') + `<div class="shelf-count"><strong>${software.length}</strong><span>APPS</span></div>`;
+// 保留卡片节点，筛选时只切换显示，避免图标重建和焦点丢失。
+$('#cards').innerHTML = software.map(app => `<article class="card" data-app="${escapeHTML(app.id)}"><div class="card-top">${icon(app)}<div><h3>${escapeHTML(app.name)}</h3><p class="subtitle">${escapeHTML(app.subtitle)}</p></div><button class="favorite" data-favorite="${app.id}" aria-pressed="${favorites.has(app.id)}" aria-label="${favorites.has(app.id) ? '取消收藏' : '收藏'} ${app.name}">${favorites.has(app.id) ? '★' : '☆'}</button></div><p class="description">${escapeHTML(app.description)}</p><div class="tags">${app.tags.map(tag => `<span class="tag">${escapeHTML(tag)}</span>`).join('')}</div><div class="card-bottom"><div class="file-meta"><span>${escapeHTML(app.platform)} · ${escapeHTML(app.usage)}</span><span>${app.downloadNote ? '百度网盘' : app.localSize ? '加密包 ' + escapeHTML(app.localSize) : '官网下载'}</span></div><div class="card-actions"><button class="details-button" data-detail="${app.id}">详情</button>${downloadLink(app)}</div></div></article>`).join('');
 function render() {
   const query = $('#search').value.trim().toLocaleLowerCase();
   const apps = software.filter(app => (filter === 'all' || (filter === 'favorites' ? favorites.has(app.id) : app.category === filter)) && [app.name, app.category, app.description, ...app.tags].join(' ').toLocaleLowerCase().includes(query));
   $('#total').textContent = String(software.length).padStart(2, '0');
   $('#favorite-count').textContent = favorites.size;
   $('#result-status').textContent = `找到 ${apps.length} 个软件`;
-  $('#cards').innerHTML = apps.map(app => `<article class="card"><div class="card-top">${icon(app)}<div><h3>${escapeHTML(app.name)}</h3><p class="subtitle">${escapeHTML(app.subtitle)}</p></div><button class="favorite" data-favorite="${app.id}" aria-pressed="${favorites.has(app.id)}" aria-label="${favorites.has(app.id) ? '取消收藏' : '收藏'} ${app.name}">${favorites.has(app.id) ? '★' : '☆'}</button></div><p class="description">${escapeHTML(app.description)}</p><div class="tags">${app.tags.map(tag => `<span class="tag">${escapeHTML(tag)}</span>`).join('')}</div><div class="card-bottom"><div class="file-meta"><span>${escapeHTML(app.platform)} · ${escapeHTML(app.usage)}</span><span>${app.downloadNote ? '百度网盘' : app.localSize ? '加密包 ' + escapeHTML(app.localSize) : '官网下载'}</span></div><div class="card-actions"><button class="details-button" data-detail="${app.id}">详情</button>${downloadLink(app)}</div></div></article>`).join('');
+  const visibleIds = new Set(apps.map(app => app.id));
+  document.querySelectorAll('#cards .card').forEach(card => {
+    card.hidden = !visibleIds.has(card.dataset.app);
+    const button = card.querySelector('[data-favorite]');
+    const app = software.find(app => app.id === card.dataset.app);
+    const selected = favorites.has(app.id);
+    button.textContent = selected ? '★' : '☆';
+    button.setAttribute('aria-pressed', String(selected));
+    button.setAttribute('aria-label', `${selected ? '取消收藏' : '收藏'} ${app.name}`);
+  });
   $('#empty').hidden = apps.length > 0;
   $('#empty-text').textContent = query ? '没有匹配的结果，试试其他关键词。' : '点击软件卡片上的星星，把顺手的工具留在这里。';
   document.querySelectorAll('[data-filter]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === filter)));
@@ -54,8 +66,7 @@ document.addEventListener('click', event => {
     favorites.has(id) ? favorites.delete(id) : favorites.add(id);
     const saved = storage.set('shelf-favorites', [...favorites]);
     render();
-    const replacement = document.querySelector(`[data-favorite="${id}"]`);
-    (replacement || $('[data-filter="favorites"]')).focus();
+    if (button.closest('[hidden]')) $('[data-filter="favorites"]').focus();
     toast(saved ? (favorites.has(id) ? '已加入你的收藏' : '已取消收藏') : '已更新本次收藏；浏览器未允许保存');
   }
   if (button.dataset.detail) showDetail(software.find(app => app.id === button.dataset.detail));
