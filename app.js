@@ -29,9 +29,7 @@ $('#cards').innerHTML = software.map(app => `<article class="card" data-app="${e
 function render() {
   const query = $('#search').value.trim().toLocaleLowerCase();
   const apps = software.filter(app => (filter === 'all' || (filter === 'favorites' ? favorites.has(app.id) : app.category === filter)) && [app.name, app.category, app.description, ...app.tags].join(' ').toLocaleLowerCase().includes(query));
-  $('#total').textContent = String(software.length).padStart(2, '0');
   $('#favorite-count').textContent = favorites.size;
-  $('#result-status').textContent = `找到 ${apps.length} 个软件`;
   const visibleIds = new Set(apps.map(app => app.id));
   document.querySelectorAll('#cards .card').forEach(card => {
     card.hidden = !visibleIds.has(card.dataset.app);

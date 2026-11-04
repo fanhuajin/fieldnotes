@@ -23,8 +23,6 @@ nav{display:flex;align-items:center;gap:12px}
 .library{padding-top:20px}
 .section-heading{display:flex;align-items:center;gap:24px}
 .section-heading h1{flex-shrink:0;margin:0;font-size:20px;line-height:1.35;font-weight:650;letter-spacing:-.5px}
-#total{display:inline-block;vertical-align:middle;margin-left:8px;padding:2px 7px;border-radius:5px;background:var(--soft);color:var(--accent);font:12px/1.5 monospace;letter-spacing:0}
-.result-summary{flex-shrink:0;margin:0;color:var(--muted);font-size:11px}
 .search-box{display:flex;flex:1;margin-left:auto;align-items:center;gap:10px;max-width:520px;min-width:180px;min-height:44px;padding:0 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
 .search-box>svg{flex-shrink:0;width:16px;height:16px;fill:none;stroke:var(--muted);stroke-width:1.7;stroke-linecap:round}
 .search-box input{flex:1;min-width:0;width:100%;min-height:42px;padding:0;border:0;background:transparent;font-size:12px;line-height:20px}
@@ -90,7 +88,6 @@ dialog .primary{margin-top:8px}
   .brand small{font-size:9px}
   nav{gap:6px}
   .section-heading{flex-wrap:wrap;gap:12px}
-  .result-summary{margin-left:auto}
   .search-box{order:1;flex-basis:100%;max-width:none;min-width:0}
   .filters{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}
   .filters button{min-height:44px;padding-inline:11px;font-size:11px}
