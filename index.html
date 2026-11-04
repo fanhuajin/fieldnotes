@@ -5,31 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="一份用得顺手的软件收藏。发现、收藏与下载你的日常工具。">
   <title>SoftShelf · 我的软件架</title>
-  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
-  <link rel="stylesheet" href="./style.css?v=abb3e1354c21">
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg?v=420fd7c47180">
+  <link rel="stylesheet" href="./style.css?v=440b908d1e39">
   <script src="./software.js?v=82717e922b45" defer></script>
-  <script src="./app.js?v=3f7db86b97a2" defer></script>
+  <script src="./app.js?v=b5803f5a5bcd" defer></script>
 </head>
 <body>
   <a class="skip" href="#library">跳至软件列表</a>
-  <header class="header wrap">
-    <a class="brand" href="./" aria-label="SoftShelf 首页"><span class="brand-icon" aria-hidden="true">s.</span><span>SoftShelf <small>PERSONAL COLLECTION</small></span></a>
-    <nav aria-label="主导航"><a href="#library">软件收藏</a><button id="about" class="text-button">关于这里</button><button id="theme" class="icon-button" aria-label="切换深色主题" title="切换主题">◐</button></nav>
+  <header class="header">
+    <div class="wrap header-inner">
+      <a class="brand" href="./" aria-label="SoftShelf 首页"><span class="brand-icon" aria-hidden="true">s.</span><span>SoftShelf <small>个人软件收藏</small></span></a>
+      <nav aria-label="主导航"><button id="about" class="text-button">关于</button><button id="theme" class="icon-button" aria-label="切换深色主题" title="切换主题">◐</button></nav>
+    </div>
   </header>
   <main class="wrap">
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-copy"><p class="eyebrow"><span class="dot"></span> A SMALL COLLECTION, A BETTER WORKFLOW</p><h1 id="hero-title">好用的软件，<br>值得<span class="accent">有个位置。</span></h1><p class="intro">把日常离不开的工具，放在一起。<br>少一点寻找，多一点顺手。</p><a class="primary hero-link" href="#library">逛逛软件架 <span aria-hidden="true">↗</span></a><div class="hero-meta"><span>个人精选</span><i></i><span>持续整理</span><i></i><span>随用随取</span></div></div>
-      <div class="shelf-art" aria-hidden="true"><div class="art-grid"></div><span class="art-label">YOUR EVERYDAY ESSENTIALS</span><div id="hero-apps" class="shelf-gallery"></div><div class="art-caption"><span>Less searching.<br>More creating.</span><span class="art-spark">✳</span></div><span class="art-index">PERSONAL / COLLECTION</span></div>
-    </section>
     <section id="library" class="library" aria-labelledby="library-title">
-      <div class="section-heading"><div><p class="eyebrow">THE COLLECTION</p><h2 id="library-title">我的软件架 <span id="total"></span></h2></div><span class="section-note">留下真正用得上的。</span></div>
-      <div class="toolbar"><div class="filters" role="group" aria-label="筛选软件"><button data-filter="all" aria-pressed="true">全部软件</button><button data-filter="写作" aria-pressed="false">写作记录</button><button data-filter="截图" aria-pressed="false">截图贴图</button><button data-filter="远程" aria-pressed="false">远程连接</button><button data-filter="录屏" aria-pressed="false">屏幕录制</button><button data-filter="favorites" aria-pressed="false">我的收藏 <span id="favorite-count">0</span></button></div><div class="search-box"><span aria-hidden="true">⌕</span><label class="sr-only" for="search">搜索软件</label><input id="search" type="search" placeholder="搜索名称、功能…" autocomplete="off"><kbd aria-hidden="true">/</kbd></div></div>
+      <div class="section-heading">
+        <div><h1 id="library-title">软件库 <span id="total"></span></h1><p class="section-note">常用工具，随取随用。</p></div>
+        <div class="search-box"><span aria-hidden="true">⌕</span><label class="sr-only" for="search">搜索软件</label><input id="search" type="search" placeholder="搜索软件、功能或标签" autocomplete="off"><kbd aria-hidden="true">/</kbd></div>
+      </div>
+      <div class="toolbar"><div class="filters" role="group" aria-label="筛选软件"><button data-filter="all" aria-pressed="true">全部软件</button></div></div>
       <p id="result-status" class="sr-only" role="status"></p><div id="cards" class="cards"></div>
       <div id="empty" class="empty" hidden><span aria-hidden="true">⌕</span><h3>这里暂时空空的</h3><p id="empty-text"></p><button id="reset" class="secondary">查看全部软件</button></div>
-      <aside class="collection-note"><span class="note-icon" aria-hidden="true">↗</span><div><h3>工具不在多，顺手就好。</h3><p>这是一个慢慢生长的软件收藏夹。把时间留给创作，让工具回归简单。</p></div><span class="note-number" aria-hidden="true">LESS, BUT BETTER.</span></aside>
     </section>
   </main>
-  <footer class="wrap footer"><span><strong>SoftShelf</strong> · 为日常，选好工具。</span><span>Made for a calmer workflow. <a href="#" id="back-top" aria-label="回到顶部">↑</a></span></footer>
+  <footer class="wrap footer"><span>SoftShelf <span aria-hidden="true">/</span> 个人软件收藏</span><a href="#" id="back-top" aria-label="回到顶部">↑</a></footer>
   <dialog id="detail" aria-labelledby="dialog-title"><button id="close-dialog" class="icon-button dialog-close" aria-label="关闭弹窗">×</button><div id="dialog-content"></div></dialog>
   <div id="toast" role="status" class="toast"></div>
 </body>

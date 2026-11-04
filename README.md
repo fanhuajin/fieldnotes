@@ -2,6 +2,8 @@
 
 一个简洁的个人软件收藏与下载页面，整理日常使用的写作、截图、远程、录屏、开发和网络工具。
 
+界面布局参考开源项目 [Homer](https://github.com/bastienwirtz/homer) 的紧凑分组卡片方式，以现有 HTML、CSS 和原生 JavaScript 实现，保留搜索、分类、收藏及下载能力。
+
 [访问网站](https://fanhuajin.github.io/soft-shelf/)
 
 ## 功能

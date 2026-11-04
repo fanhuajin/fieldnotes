@@ -24,9 +24,8 @@ function downloadLink(app) {
   if (!app.fileName) return `<a class="primary" href="${escapeHTML(destination(app))}" target="_blank" rel="noopener noreferrer">前往官网下载 <span aria-hidden="true">↗</span></a>`;
   return `<a class="primary" href="${escapeHTML(destination(app))}" download="${escapeHTML(app.fileName)}" data-download="${app.id}">${app.fileName.endsWith('.zip') ? '下载 ZIP' : '下载安装包'} <span aria-hidden="true">↓</span></a>`;
 }
-$('#hero-apps').innerHTML = software.map(app => `<div class="shelf-app" title="${escapeHTML(app.name)}"><img src="${escapeHTML(app.icon)}" alt="" width="32" height="32"><span>${escapeHTML(app.name)}</span></div>`).join('') + `<div class="shelf-count"><strong>${software.length}</strong><span>APPS</span></div>`;
 // 保留卡片节点，筛选时只切换显示，避免图标重建和焦点丢失。
-$('#cards').innerHTML = software.map(app => `<article class="card" data-app="${escapeHTML(app.id)}"><div class="card-top">${icon(app)}<div><h3>${escapeHTML(app.name)}</h3><p class="subtitle">${escapeHTML(app.subtitle)}</p></div><button class="favorite" data-favorite="${app.id}" aria-pressed="${favorites.has(app.id)}" aria-label="${favorites.has(app.id) ? '取消收藏' : '收藏'} ${app.name}">${favorites.has(app.id) ? '★' : '☆'}</button></div><p class="description">${escapeHTML(app.description)}</p><div class="tags">${app.tags.map(tag => `<span class="tag">${escapeHTML(tag)}</span>`).join('')}</div><div class="card-bottom"><div class="file-meta"><span>${escapeHTML(app.platform)} · ${escapeHTML(app.usage)}</span><span>${app.downloadNote ? '百度网盘' : app.localSize ? '加密包 ' + escapeHTML(app.localSize) : '官网下载'}</span></div><div class="card-actions"><button class="details-button" data-detail="${app.id}">详情</button>${downloadLink(app)}</div></div></article>`).join('');
+$('#cards').innerHTML = software.map(app => `<article class="card" data-app="${escapeHTML(app.id)}"><div class="card-top">${icon(app)}<div><h3>${escapeHTML(app.name)}</h3></div><button class="favorite" data-favorite="${app.id}" aria-pressed="${favorites.has(app.id)}" aria-label="${favorites.has(app.id) ? '取消收藏' : '收藏'} ${app.name}">${favorites.has(app.id) ? '★' : '☆'}</button></div><p class="description">${escapeHTML(app.description)}</p><div class="tags">${app.tags.map(tag => `<span class="tag">${escapeHTML(tag)}</span>`).join('')}</div><div class="card-bottom"><div class="file-meta"><span>${escapeHTML(app.platform)} · ${escapeHTML(app.usage)}</span><span>${app.downloadNote ? '百度网盘' : app.localSize ? '加密包 ' + escapeHTML(app.localSize) : '官网下载'}</span></div><div class="card-actions"><button class="details-button" data-detail="${app.id}">详情</button>${downloadLink(app)}</div></div></article>`).join('');
 function render() {
   const query = $('#search').value.trim().toLocaleLowerCase();
   const apps = software.filter(app => (filter === 'all' || (filter === 'favorites' ? favorites.has(app.id) : app.category === filter)) && [app.name, app.category, app.description, ...app.tags].join(' ').toLocaleLowerCase().includes(query));
@@ -82,7 +81,7 @@ $('#detail').addEventListener('click', event => {
   if (event.target === $('#detail') && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) $('#detail').close();
 });
 $('#about').addEventListener('click', () => {
-  $('#dialog-content').innerHTML = '<p class="eyebrow">ABOUT SOFT SHELF</p><h2 id="dialog-title">用得顺手，才值得收藏。</h2><p>SoftShelf，是我的个人软件架。这里整理日常使用的写作与效率工具，希望每次换电脑、找工具时，都能少绕一点路。</p><p class="notice">软件属于各自作者。这里提供本站保存的软件包，点击即可下载；收藏保存在当前浏览器中。</p>';
+  $('#dialog-content').innerHTML = '<p class="eyebrow">ABOUT SOFT SHELF</p><h2 id="dialog-title">关于 SoftShelf</h2><p>SoftShelf，是我的个人软件架。这里整理常用的软件与工具，方便查找、收藏和下载。</p><p class="notice">软件属于各自作者。这里提供本站保存的软件包，点击即可下载；收藏保存在当前浏览器中。</p>';
   $('#detail').showModal();
 });
 function applyTheme(theme) {
