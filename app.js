@@ -5,7 +5,7 @@ const storage = {
 };
 const storedFavorites = storage.get('shelf-favorites', []);
 const favorites = new Set(Array.isArray(storedFavorites) ? storedFavorites.filter(id => software.some(app => app.id === id)) : []);
-const categoryNames = {'写作':'写作记录','截图':'截图贴图','远程':'远程连接','录屏':'屏幕录制','开发':'开发测试','网络':'网络工具'};
+const categoryNames = {'写作':'写作记录','截图':'截图贴图','远程':'远程连接','录屏':'屏幕录制','开发':'开发测试','网络':'网络工具','视频':'视频工具','浏览器':'浏览器扩展'};
 let filter = 'all';
 let toastTimer;
 const escapeHTML = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));

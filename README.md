@@ -24,8 +24,14 @@
 | Apache JMeter | 5.6.3 | 解密 `JMeter.zip`，完整解压后运行 `Start-JMeter.cmd`，已包含 Java 17 |
 | Clash Verge Rev | 2.5.5 x64 | 解密 `Clash-Verge-Rev.zip`，运行 EXE 安装，参照附带的《配置clash.docx》配置 |
 | WebStorm | 2025.3.2 | 解密 `WebStorm.zip`，运行 EXE 安装，资料位于「WebStorm安装」文件夹 |
+| Topaz Video AI | 4.2.2 | 解密 `Topaz-Video-AI.zip`，再解压内层 RAR，按原包说明使用 |
+| Cockpit Tools | 1.3.56 x64 | 解密 `Cockpit-Tools.zip`，运行 `Cockpit-Tools.exe` 安装 |
+| 剪映 | 原包目录标识为 5.9.0.11632 | 解密 `Jianying.zip`，再解压内层 RAR，按原包说明使用 |
+| DeepSeek DSH | 扩展清单标识为 0.1.4 | 解密 `DeepSeek-DSH.zip`，按包内 README 配置浏览器扩展及配套服务 |
 
 Clash Verge Rev 的 ZIP 包含安装程序和原始使用说明文档。
+
+Topaz Video AI 与剪映的原始 RAR 内容保持不变，外层 ZIP 与内层 RAR 均使用软件名称命名。DeepSeek DSH 保留原有 `DSH-Edge-Kit` 目录结构。
 
 ## 下载文件
 
@@ -47,6 +53,8 @@ Clash Verge Rev 的 ZIP 包含安装程序和原始使用说明文档。
 
 新增或替换软件时，先加密并验证 ZIP，再上传 Releases，同步更新 `software.js` 中的 `fileName`、`releaseUrl`、`localSize`、`usage`、`note`。密码不得写入网页、脚本、文档或 Git。分类自动生成；显示名称可在 `app.js` 的 `categoryNames` 中调整。
 
+修改 CSS 或 JavaScript 后，同步更新 `index.html` 中对应资源的 `v` 参数（文件 SHA-256 的前 12 位），避免浏览器混用旧资源。
+
 GitHub Pages 使用 `main` 分支根目录发布。提交更新后由 GitHub 自动部署。
 
 ## 来源说明
@@ -60,5 +68,8 @@ GitHub Pages 使用 `main` 分支根目录发布。提交更新后由 GitHub 自
 - [Apache JMeter](https://jmeter.apache.org/)
 - [Clash Verge Rev](https://github.com/clash-verge-rev/clash-verge-rev)
 - [WebStorm](https://www.jetbrains.com/webstorm/)
+- [Cockpit Tools](https://github.com/jlcodes99/cockpit-tools)
+
+新增 Topaz Video AI、剪映和 DeepSeek DSH 的文件及图标来自本地提供的压缩包。Cockpit Tools 图标取自官方 v1.3.56 源码，安装程序 SHA-256 已与该版本官方 Release 附件核对一致。
 
 UU 远程与 EV 录屏安装包的 Windows 数字签名校验有效。Clash Verge Rev 2.5.5 安装包没有 Windows 数字签名。未进行所有软件的安装或图形界面测试。
