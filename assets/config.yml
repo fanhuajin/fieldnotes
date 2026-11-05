@@ -1,7 +1,7 @@
 {
-  "title": "我的软件架",
+  "title": "My Software Shelf",
   "subtitle": "SoftShelf",
-  "documentTitle": "SoftShelf · 我的软件架",
+  "documentTitle": "SoftShelf · My Software Shelf",
   "logo": "assets/logo.svg?v=1ae4ba120ea9",
   "header": true,
   "theme": "default",
@@ -26,7 +26,7 @@
       "target": "_blank"
     },
     {
-      "name": "使用说明",
+      "name": "Usage Guide",
       "icon": "fas fa-book",
       "url": "https://github.com/fanhuajin/soft-shelf#软件与使用方式",
       "target": "_blank"
