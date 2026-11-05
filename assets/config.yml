@@ -15,8 +15,7 @@
   "footer": "<p>SoftShelf · 个人软件收藏 // Powered by <a href=\"https://github.com/bastienwirtz/homer\" target=\"_blank\" rel=\"noreferrer\">Homer</a>, <a href=\"https://bulma.io/\" target=\"_blank\" rel=\"noreferrer\">Bulma</a>, <a href=\"https://vuejs.org/\" target=\"_blank\" rel=\"noreferrer\">Vue.js</a> &amp; <a href=\"https://fontawesome.com/\" target=\"_blank\" rel=\"noreferrer\">Font Awesome</a></p>",
   "message": {
     "style": "is-dark",
-    "title": "👋 欢迎来到我的软件架",
-    "content": "这里整理常用的软件与工具，点击卡片即可下载。<br />软件包为加密 ZIP，解压密码不公开；请查看 <a href=\"https://github.com/fanhuajin/soft-shelf#软件与使用方式\" target=\"_blank\" rel=\"noreferrer\">使用说明</a>，了解解压与安装方式。"
+    "content": "点击软件卡片即可下载。软件包为加密 ZIP，解压密码不公开；安装方式见顶部「使用说明」。"
   },
   "links": [
     {
@@ -34,8 +33,8 @@
   ],
   "services": [
     {
-      "name": "写作记录",
-      "icon": "fas fa-pen-nib",
+      "name": "日常办公",
+      "icon": "fas fa-desktop",
       "items": [
         {
           "id": "typora",
@@ -59,13 +58,7 @@
           "target": "_self",
           "tag": "Markdown",
           "keywords": "写作 Markdown 专注写作 专注写作的 Markdown 编辑器。所见即所得，让笔记、文档与灵感自然成形。 解密后安装"
-        }
-      ]
-    },
-    {
-      "name": "截图贴图",
-      "icon": "fas fa-crop-simple",
-      "items": [
+        },
         {
           "id": "snipaste",
           "name": "Snipaste",
@@ -88,13 +81,7 @@
           "target": "_self",
           "tag": "截图贴图",
           "keywords": "截图 截图贴图 标注取色 截图，也不止截图。快速标注、取色，把参考内容贴在桌面，让思路保持连贯。 解密后运行"
-        }
-      ]
-    },
-    {
-      "name": "远程连接",
-      "icon": "fas fa-desktop",
-      "items": [
+        },
         {
           "id": "uu-remote",
           "name": "UU 远程",
@@ -117,13 +104,7 @@
           "target": "_self",
           "tag": "远程桌面",
           "keywords": "远程 远程桌面 文件传输 网易出品的远程控制工具。远程连接电脑，在不同设备间处理工作、传递文件和协助操作。 解密后安装"
-        }
-      ]
-    },
-    {
-      "name": "屏幕录制",
-      "icon": "fas fa-video",
-      "items": [
+        },
         {
           "id": "ev-capture",
           "name": "EV 录屏",
@@ -150,7 +131,7 @@
       ]
     },
     {
-      "name": "开发测试",
+      "name": "开发与网络",
       "icon": "fas fa-code",
       "items": [
         {
@@ -222,13 +203,7 @@
           "target": "_self",
           "tag": "账号管理",
           "keywords": "开发 账号管理 配额查看 AI 编程工具账号管理应用，支持多账号切换与配额查看。本站保存版本为 1.3.56 x64。 解密后安装"
-        }
-      ]
-    },
-    {
-      "name": "网络工具",
-      "icon": "fas fa-globe",
-      "items": [
+        },
         {
           "id": "clash-verge",
           "name": "Clash Verge Rev",
@@ -251,11 +226,33 @@
           "target": "_self",
           "tag": "代理管理",
           "keywords": "网络 代理管理 规则配置 Clash Verge 的社区后续维护版本。通过图形界面管理代理配置、连接与规则。 解密后安装"
+        },
+        {
+          "id": "deepseek-dsh",
+          "name": "DeepSeek DSH",
+          "subtitle": "让浏览器，接上助手。",
+          "category": "浏览器",
+          "description": "DSH 浏览器助手扩展与本地配套服务，提供浏览器内容读取和操作能力。",
+          "tags": [
+            "浏览器扩展",
+            "DSH助手"
+          ],
+          "platform": "Windows · 浏览器扩展",
+          "localSize": "43.6 MB",
+          "usage": "解密后配置",
+          "fileName": "DeepSeek-DSH.zip",
+          "note": "加密 ZIP 保留 DSH-Edge-Kit 的扩展、运行环境及配套文件；解压密码不公开。",
+          "tips": "输入自有密码完整解压，参照包内 README 配置浏览器扩展并启动配套服务。",
+          "logo": "./assets/deepseek-dsh.png",
+          "url": "https://github.com/fanhuajin/soft-shelf/releases/download/v2.0.0/DeepSeek-DSH.zip",
+          "target": "_self",
+          "tag": "浏览器扩展",
+          "keywords": "浏览器 浏览器扩展 DSH助手 DSH 浏览器助手扩展与本地配套服务，提供浏览器内容读取和操作能力。 解密后配置"
         }
       ]
     },
     {
-      "name": "视频工具",
+      "name": "视频创作",
       "icon": "fas fa-film",
       "items": [
         {
@@ -301,34 +298,6 @@
           "target": "_self",
           "tag": "视频剪辑",
           "keywords": "视频 视频剪辑 内容制作 视频剪辑与内容制作工具。提供本地保存的剪映便携压缩包，保留原包内容。 解密后解压"
-        }
-      ]
-    },
-    {
-      "name": "浏览器扩展",
-      "icon": "fas fa-puzzle-piece",
-      "items": [
-        {
-          "id": "deepseek-dsh",
-          "name": "DeepSeek DSH",
-          "subtitle": "让浏览器，接上助手。",
-          "category": "浏览器",
-          "description": "DSH 浏览器助手扩展与本地配套服务，提供浏览器内容读取和操作能力。",
-          "tags": [
-            "浏览器扩展",
-            "DSH助手"
-          ],
-          "platform": "Windows · 浏览器扩展",
-          "localSize": "43.6 MB",
-          "usage": "解密后配置",
-          "fileName": "DeepSeek-DSH.zip",
-          "note": "加密 ZIP 保留 DSH-Edge-Kit 的扩展、运行环境及配套文件；解压密码不公开。",
-          "tips": "输入自有密码完整解压，参照包内 README 配置浏览器扩展并启动配套服务。",
-          "logo": "./assets/deepseek-dsh.png",
-          "url": "https://github.com/fanhuajin/soft-shelf/releases/download/v2.0.0/DeepSeek-DSH.zip",
-          "target": "_self",
-          "tag": "浏览器扩展",
-          "keywords": "浏览器 浏览器扩展 DSH助手 DSH 浏览器助手扩展与本地配套服务，提供浏览器内容读取和操作能力。 解密后配置"
         }
       ]
     }
