@@ -2,7 +2,7 @@
   "title": "我的软件架",
   "subtitle": "SoftShelf",
   "documentTitle": "SoftShelf · 我的软件架",
-  "logo": "assets/logo.svg",
+  "logo": "assets/logo.svg?v=1ae4ba120ea9",
   "header": true,
   "theme": "default",
   "columns": "3",
@@ -35,7 +35,7 @@
   "services": [
     {
       "name": "日常办公",
-      "icon": "fas fa-desktop",
+      "icon": "softshelf-icon softshelf-office",
       "items": [
         {
           "id": "typora",
@@ -133,7 +133,7 @@
     },
     {
       "name": "开发与网络",
-      "icon": "fas fa-code",
+      "icon": "softshelf-icon softshelf-development",
       "items": [
         {
           "id": "jmeter",
@@ -254,7 +254,7 @@
     },
     {
       "name": "视频创作",
-      "icon": "fas fa-film",
+      "icon": "softshelf-icon softshelf-video",
       "items": [
         {
           "id": "topaz-video-ai",
@@ -302,5 +302,8 @@
         }
       ]
     }
+  ],
+  "stylesheet": [
+    "assets/icons.css?v=3ae790ccb9ef"
   ]
 }

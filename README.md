@@ -62,6 +62,8 @@ GitHub Pages 使用 `main` 分支根目录发布。提交更新后由 GitHub 自
 
 软件及图标的权利属于各自所有者，本项目不代表相关软件的官方站点或合作方。
 
+网站 Logo、favicon 和三个分类图标采用 [Tabler Icons](https://github.com/tabler/tabler-icons) 的 MIT 开源图形，统一使用网站蓝色；来源、改动说明和许可证见 [assets/icons/README.md](assets/icons/README.md)。`assets/icons.css` 仅设置分类图标的尺寸、颜色和 SVG 蒙版，不覆盖 Homer 页面布局。
+
 - [Typora](https://typora.io/)
 - [Snipaste](https://www.snipaste.com/)
 - [UU 远程](https://uuyc.163.com/)

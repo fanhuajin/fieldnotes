@@ -1,0 +1,15 @@
+/* Tabler Icons (MIT). Scoped to the three software group icons; Homer styles are unchanged. */
+#main-section h2 i.softshelf-icon {
+  display: inline-block;
+  width: 1.4rem;
+  height: 1.4rem;
+  margin-right: 10px;
+  vertical-align: -0.2em;
+  background-color: currentColor;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+}
+.softshelf-office { mask-image: url("./icons/device-desktop.svg?v=2fdd2150904a"); }
+.softshelf-development { mask-image: url("./icons/code.svg?v=ff3d40c83c1a"); }
+.softshelf-video { mask-image: url("./icons/movie.svg?v=c060349bd89c"); }
