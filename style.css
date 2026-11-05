@@ -71,6 +71,8 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid hsl(v
 .compact-grid .card-content{flex-direction:row;align-items:center;min-height:0;min-width:0;padding:4px 8px}
 .compact-grid .card-body{min-width:0}
 .compact-grid .card-body>.text-lg{font-size:14px;line-height:20px;-webkit-line-clamp:1}
+.compact-grid .card-title-text{-webkit-line-clamp:1}
+.compact-grid .software-icon{width:20px;height:20px;margin-top:0}
 .compact-grid .card-tags,.compact-grid .card-note{display:none}
 .compact-grid .card-bottom{width:auto;flex-shrink:0}
 .compact-grid .card-meta{display:none}
