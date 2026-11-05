@@ -343,6 +343,106 @@
       "image": "./assets/jianying.png",
       "highlights": [],
       "cover": "assets/covers/jianying.png"
+    },
+    {
+      "type": "bookmark",
+      "id": "site-deepseek",
+      "name": "DeepSeek",
+      "url": "https://chat.deepseek.com/",
+      "description": "DeepSeek 在线对话入口。",
+      "tags": [
+        "AI",
+        "对话"
+      ],
+      "image": "assets/deepseek-dsh.png",
+      "cover": "assets/covers/deepseek-dsh.jpg",
+      "lists": [
+        "bookmarks"
+      ],
+      "highlights": []
+    },
+    {
+      "type": "bookmark",
+      "id": "site-glm-coding",
+      "name": "智谱",
+      "url": "https://bigmodel.cn/glm-coding",
+      "description": "智谱 GLM Coding 页面，查看编程服务与相关使用信息。",
+      "tags": [
+        "AI",
+        "编程"
+      ],
+      "image": "assets/sites/glm.png",
+      "cover": "assets/sites/glm-cover.png",
+      "lists": [
+        "bookmarks"
+      ],
+      "highlights": []
+    },
+    {
+      "type": "bookmark",
+      "id": "site-chatgpt",
+      "name": "ChatGPT",
+      "url": "https://chatgpt.com/",
+      "description": "ChatGPT 在线对话入口。",
+      "tags": [
+        "AI",
+        "对话"
+      ],
+      "image": "assets/sites/chatgpt.svg",
+      "lists": [
+        "bookmarks"
+      ],
+      "highlights": []
+    },
+    {
+      "type": "bookmark",
+      "id": "site-westdata",
+      "name": "西部数据 VPN 节点",
+      "url": "https://wd-gold.net/clientarea.php",
+      "description": "西部数据 VPN 节点的用户中心入口。",
+      "tags": [
+        "VPN",
+        "用户中心"
+      ],
+      "image": "assets/sites/westdata.png",
+      "cover": "assets/sites/westdata-cover.svg",
+      "lists": [
+        "bookmarks"
+      ],
+      "highlights": []
+    },
+    {
+      "type": "bookmark",
+      "id": "site-image-playground",
+      "name": "图片中转站",
+      "url": "https://img.yeelo.fun/admin/image-playground",
+      "description": "图片中转站的图片工作台入口。",
+      "tags": [
+        "图片",
+        "工作台"
+      ],
+      "image": "assets/sites/yeemagine.svg",
+      "cover": "assets/sites/yeemagine-cover.jpg",
+      "lists": [
+        "bookmarks"
+      ],
+      "highlights": []
+    },
+    {
+      "type": "bookmark",
+      "id": "site-linux-do",
+      "name": "Linux 站",
+      "url": "https://linux.do/new",
+      "description": "查看 Linux 站的新主题。",
+      "tags": [
+        "社区",
+        "新主题"
+      ],
+      "image": "assets/sites/linux-do.svg",
+      "lists": [
+        "bookmarks"
+      ],
+      "highlights": []
     }
   ]
 }

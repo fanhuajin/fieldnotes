@@ -55,9 +55,6 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid hsl(v
 .card-meta>span{flex-shrink:0;font-size:inherit}
 .card-actions{align-items:center;flex-shrink:0}
 .card-action{height:40px;min-width:28px;padding:8px 4px}
-.favourite-active{color:#eab308}
-.favourite-active svg{fill:#eab308}
-.archive-indicator{display:flex;align-items:center;padding:4px}
 .grid-grid{display:grid;grid-template-columns:repeat(var(--resource-columns),minmax(0,1fr))}
 .grid-grid .card-content{min-height:0}
 .list-grid,.compact-grid{display:flex;flex-direction:column}
@@ -138,8 +135,6 @@ kbd{padding:2px 6px;background:hsl(var(--muted));border:1px solid hsl(var(--bord
 .toast{position:fixed;z-index:200;bottom:24px;left:50%;transform:translateX(-50%);max-width:calc(100% - 32px);padding:12px 20px;border:1px solid hsl(var(--border));border-radius:8px;background:hsl(var(--popover));box-shadow:0 4px 20px #0002;font-size:14px}
 .load-error{max-width:600px;margin:80px auto}
 .load-error>p{margin-top:16px}
-.highlight-card{margin-bottom:16px;white-space:pre-line}
-.highlight-card>a{display:inline-block;margin-top:16px}
 @media(min-width:640px){.app-shell{position:fixed;inset:0;overflow:hidden}.workspace{height:calc(100dvh - 64px);overflow:hidden}.main-panel{min-height:0;overflow-y:auto}.content-area{padding:16px}}
 @media(min-width:1280px){.brand-slot{width:272px}.desktop-sidebar{width:288px}}
 @media(min-width:640px) and (max-width:999px){.grid-grid{grid-template-columns:repeat(min(var(--resource-columns),2),minmax(0,1fr))}}
