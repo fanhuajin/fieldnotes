@@ -22,8 +22,17 @@ function downloadLink(app) {
   if (!app.fileName) return `<a class="primary" href="${escapeHTML(destination(app))}" target="_blank" rel="noopener noreferrer">前往官网下载 <span aria-hidden="true">↗</span></a>`;
   return `<a class="primary" href="${escapeHTML(destination(app))}" download="${escapeHTML(app.fileName)}" data-download="${app.id}">${app.fileName.endsWith('.zip') ? '下载 ZIP' : '下载安装包'} <span aria-hidden="true">↓</span></a>`;
 }
-// 保留卡片节点，筛选时只切换显示，避免图标重建和焦点丢失。
-$('#cards').innerHTML = software.map(app => `<article class="card" data-app="${escapeHTML(app.id)}"><div class="card-top">${icon(app)}<div><h3>${escapeHTML(app.name)}</h3></div></div><p class="description">${escapeHTML(app.description)}</p><div class="tags">${app.tags.map(tag => `<span class="tag">${escapeHTML(tag)}</span>`).join('')}</div><div class="card-bottom"><div class="file-meta"><span>${escapeHTML(app.platform)} · ${escapeHTML(app.usage)}</span><span>${app.downloadNote ? '百度网盘' : app.localSize ? '加密包 ' + escapeHTML(app.localSize) : '官网下载'}</span></div><div class="card-actions"><button class="details-button" data-detail="${app.id}">详情</button>${downloadLink(app)}</div></div></article>`).join('');
+// 分组与卡片只生成一次，筛选时保留节点和键盘焦点。
+const categories = [...new Set(software.map(app => app.category))];
+function card(app) {
+  const content = icon(app) + '<span class="card-copy"><span class="card-title">' + escapeHTML(app.name) + '</span><span class="description">' + escapeHTML(app.subtitle || app.description) + '</span></span>';
+  const label = escapeHTML(app.name + (app.fileName ? '，下载 ' + app.fileName : '，前往官网下载'));
+  const main = app.downloadNote
+    ? '<button class="card-main" data-detail="' + escapeHTML(app.id) + '">' + content + '</button>'
+    : '<a class="card-main" href="' + escapeHTML(destination(app)) + '" aria-label="' + label + '" ' + (app.fileName ? 'download="' + escapeHTML(app.fileName) + '" data-download="' + escapeHTML(app.id) + '"' : 'target="_blank" rel="noopener noreferrer"') + '>' + content + '</a>';
+  return '<article class="card" data-app="' + escapeHTML(app.id) + '">' + main + '<button class="details-button" data-detail="' + escapeHTML(app.id) + '" aria-label="' + escapeHTML(app.name) + ' 详情" title="查看详情">ⓘ</button></article>';
+}
+$('#cards').innerHTML = categories.map((category, index) => '<section class="software-group" aria-labelledby="group-' + index + '"><h2 id="group-' + index + '"><span class="group-icon" aria-hidden="true">→</span>' + escapeHTML(categoryNames[category] || category) + '</h2><div class="cards">' + software.filter(app => app.category === category).map(card).join('') + '</div></section>').join('');
 function render() {
   const query = $('#search').value.trim().toLocaleLowerCase();
   const apps = software.filter(app => (filter === 'all' || app.category === filter) && [app.name, app.category, app.description, ...app.tags].join(' ').toLocaleLowerCase().includes(query));
@@ -33,6 +42,10 @@ function render() {
   document.querySelectorAll('#cards .card').forEach(card => {
     card.hidden = !visibleIds.has(card.dataset.app);
   });
+  document.querySelectorAll('.software-group').forEach(group => {
+    group.hidden = !group.querySelector('.card:not([hidden])');
+  });
+  $('#results').textContent = '找到 ' + apps.length + ' 款软件';
   $('#empty').hidden = apps.length > 0;
   $('#empty-text').textContent = query ? '没有匹配的结果，试试其他关键词。' : '这个分类暂时没有软件，试试其他分类。';
   document.querySelectorAll('[data-filter]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === filter)));
@@ -44,7 +57,7 @@ function toast(message) {
   toastTimer = setTimeout(() => $('#toast').classList.remove('visible'), 3000);
 }
 function showDetail(app) {
-  $('#dialog-content').innerHTML = `${icon(app)}<h2 id="dialog-title">${escapeHTML(app.name)}</h2><p>${escapeHTML(app.description)}</p><p>${escapeHTML(app.tips)}</p><p class="notice">${escapeHTML(app.note)}</p><div class="dialog-actions">${downloadLink(app)}</div>`;
+  $('#dialog-content').innerHTML = `${icon(app)}<h2 id="dialog-title">${escapeHTML(app.name)}</h2><p>${escapeHTML(app.description)}</p><p class="file-meta">${escapeHTML(app.platform)} · ${escapeHTML(app.usage)}${app.localSize ? ' · ' + escapeHTML(app.localSize) : ''}</p><p>${escapeHTML(app.tips)}</p><p class="notice">${escapeHTML(app.note)}</p><div class="dialog-actions">${downloadLink(app)}</div>`;
   $('#detail').showModal();
 }
 document.addEventListener('click', event => {
@@ -78,8 +91,25 @@ $('#theme').addEventListener('click', () => {
   const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
   applyTheme(theme); storage.set('shelf-theme', theme);
 });
+function applyLayout(columns) {
+  $('#cards').classList.toggle('columns', columns);
+  $('#layout').setAttribute('aria-pressed', String(columns));
+  $('#layout').setAttribute('aria-label', columns ? '切换为横排布局' : '切换为分栏布局');
+}
+applyLayout(storage.get('shelf-columns', true) === true);
+$('#layout').addEventListener('click', () => {
+  const columns = !$('#cards').classList.contains('columns');
+  applyLayout(columns); storage.set('shelf-columns', columns);
+});
+$('#menu').addEventListener('click', () => {
+  const expanded = $('#menu').getAttribute('aria-expanded') !== 'true';
+  $('#menu').setAttribute('aria-expanded', String(expanded));
+  $('#menu').setAttribute('aria-label', expanded ? '收起导航菜单' : '展开导航菜单');
+});
 document.addEventListener('keydown', event => {
-  if (event.key === '/' && !event.ctrlKey && !event.metaKey && !event.altKey && !$('#detail').open && !event.target.closest('input, textarea, [contenteditable]')) { event.preventDefault(); $('#search').focus(); }
+  if (event.key === 'Escape' && event.target === $('#search')) { $('#search').value = ''; render(); }
+
+  if (event.key === '/' && !event.ctrlKey && !event.metaKey && !event.altKey && !$('#detail').open && !event.target.closest('input, textarea, [contenteditable]')) { event.preventDefault(); $('#menu').setAttribute('aria-expanded', 'true'); $('#menu').setAttribute('aria-label', '收起导航菜单'); $('#search').focus(); }
 });
 $('#back-top').addEventListener('click', event => { event.preventDefault(); window.scrollTo({top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'}); $('.brand').focus({preventScroll:true}); });
 render();
