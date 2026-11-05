@@ -7,11 +7,11 @@ const store = {
   read(key, fallback) { try { return JSON.parse(localStorage.getItem('softshelf-' + key)) ?? fallback; } catch { return fallback; } },
   write(key, value) { try { localStorage.setItem('softshelf-' + key, JSON.stringify(value)); } catch { /* View state still works when browser storage is unavailable. */ } },
 };
-// Migrate the new default sort without resetting other display preferences.
-const saved = store.read('view-v5', { ...store.read('view-v4', { ...store.read('view-v3', {}), notes: true }), sort: 'newest' });
+// Migrate the default layout while preserving other display preferences.
+const saved = store.read('view-v6', { ...store.read('view-v5', { ...store.read('view-v4', { ...store.read('view-v3', {}), notes: true }), sort: 'newest' }), layout: 'grid' });
 const state = {
   page: 'home', query: '', tag: '',
-  layout: ['masonry', 'grid', 'list', 'compact'].includes(saved.layout) ? saved.layout : 'masonry',
+  layout: ['masonry', 'grid', 'list', 'compact'].includes(saved.layout) ? saved.layout : 'grid',
   columns: [2, 3, 4, 5].includes(saved.columns) ? saved.columns : 3,
   notes: saved.notes !== false, tags: saved.tags !== false, title: saved.title !== false,
   fit: saved.fit === 'contain' ? 'contain' : 'cover',
@@ -31,7 +31,7 @@ function icon(name, size = 18) {
   return svg.replace(/width="[^"]*"/, `width="${size}"`).replace(/height="[^"]*"/, `height="${size}"`).replace(/class="[^"]*"/, '').replace('<svg', '<svg class="resource-icon"');
 }
 function route(page, tag = '') { return '#/' + page + (tag ? '?tag=' + encodeURIComponent(tag) : ''); }
-function saveView() { store.write('view-v5', Object.fromEntries(['layout', 'columns', 'notes', 'tags', 'title', 'fit', 'sort'].map(key => [key, state[key]]))); }
+function saveView() { store.write('view-v6', Object.fromEntries(['layout', 'columns', 'notes', 'tags', 'title', 'fit', 'sort'].map(key => [key, state[key]]))); }
 function applyTheme() {
   const dark = state.theme === 'dark' || (state.theme === 'system' && media.matches);
   document.documentElement.classList.toggle('dark', dark);
