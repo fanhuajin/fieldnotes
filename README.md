@@ -49,7 +49,7 @@ Homer 需要通过 HTTP(S) 访问，不支持直接双击 `index.html`。本地�
 
 - `assets/config.yml`：Homer 原生配置，使用 JSON 兼容的 YAML 格式；包含页头、说明、导航、分类和所有软件下载元数据。
 - `vendor/homer/`：演示站原版 CSS、JavaScript、字体及许可证。文件来源与 SHA-256 见 `vendor/homer/NOTICE.md`。
-- `assets/`：本地软件图标。
+- `assets/`：本地软件图标；`spacing.css` 仅调整内容间距，使用 8px 基准协调欢迎区、分组标题和卡片留白。
 - `downloads/`：加密软件包的本地副本，不纳入 Git。
 
 新增或替换软件时，先加密并验证 ZIP，再上传 Releases，同步更新 `assets/config.yml` 对应 `services[].items[]` 中的 `url`、`fileName`、`localSize`、`usage`、`note`、`tips` 和搜索 `keywords`。原有详细元数据已完整迁移，不再维护 `software.js`。密码不得写入网页、配置、文档或 Git。
