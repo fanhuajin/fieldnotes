@@ -2,7 +2,7 @@
 
 个人博客与内容小站，目前整理软件下载与网页收藏，后续可扩展日常记录、文章与其他内容。使用 [Karakeep](https://github.com/karakeep-app/karakeep) 演示站 v0.34.1 的原版 CSS、Inter 字体、Logo 图形和 Lucide 图标，名称改为 Fieldnotes。
 
-[访问网站](https://fanhuajin.github.io/soft-shelf/)
+[访问网站](https://fanhuajin.github.io/fieldnotes/)
 
 已确认的页面样式、交互和内容规则见 [页面与内容维护规则](DESIGN_RULES.md)，软件下载与网页收藏均遵循这份记录。
 
@@ -37,7 +37,7 @@ Topaz Video AI 与剪映的原始 RAR 内容保持不变，外层 ZIP 与内层 
 
 ## 下载文件
 
-所有软件包均为 AES-256 加密 ZIP，统一使用软件名称命名，发布于本仓库的 [Releases](https://github.com/fanhuajin/soft-shelf/releases/tag/v2.0.0)。解压密码不公开，也不保存在网页、代码或仓库中。
+所有软件包均为 AES-256 加密 ZIP，统一使用软件名称命名，发布于本仓库的 [Releases](https://github.com/fanhuajin/fieldnotes/releases/tag/v2.0.0)。解压密码不公开，也不保存在网页、代码或仓库中。
 
 请使用支持 AES-256 ZIP 的解压工具，例如 7-Zip 或 WinRAR。JMeter 运行包中的 `runtime`、`bin` 和 `lib` 等目录需要完整保留。
 
