@@ -1,6 +1,6 @@
-# SoftShelf
+# Fieldnotes
 
-软件下载与网页收藏的静态资源库，使用 [Karakeep](https://github.com/karakeep-app/karakeep) 演示站 v0.34.1 的原版 CSS、Inter 字体、Logo 图形和 Lucide 图标，名称改为 SoftShelf。
+个人博客与内容小站，目前整理软件下载与网页收藏，后续可扩展日常记录、文章与其他内容。使用 [Karakeep](https://github.com/karakeep-app/karakeep) 演示站 v0.34.1 的原版 CSS、Inter 字体、Logo 图形和 Lucide 图标，名称改为 Fieldnotes。
 
 [访问网站](https://fanhuajin.github.io/soft-shelf/)
 
