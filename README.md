@@ -2,9 +2,11 @@
 
 个人博客与内容小站，目前整理软件下载与网页收藏，后续可扩展日常记录、文章与其他内容。使用 [Karakeep](https://github.com/karakeep-app/karakeep) 演示站 v0.34.1 的原版 CSS、Inter 字体、Logo 图形和 Lucide 图标，名称改为 Fieldnotes。
 
-[访问网站](https://fanhuajin.github.io/fieldnotes/)
+[访问网站](https://fanhuajin.github.io/)
 
 已确认的页面样式、交互和内容规则见 [页面与内容维护规则](DESIGN_RULES.md)，软件下载与网页收藏均遵循这份记录。
+
+正式网站部署于 `fanhuajin.Github.io` 仓库的根目录，History 路由使用 `/home`、`/tags`、`/list/software` 等路径；本仓库保留应用源文件和下载 Releases。
 
 ## 使用
 
