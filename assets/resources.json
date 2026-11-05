@@ -44,7 +44,7 @@
       ],
       "image": "./assets/jmeter.png",
       "highlights": [],
-      "cover": "assets/covers/jmeter.png"
+      "cover": "assets/covers/jmeter.jpg"
     },
     {
       "id": "webstorm",
@@ -75,7 +75,7 @@
       ],
       "image": "./assets/webstorm.png",
       "highlights": [],
-      "cover": "assets/covers/webstorm.png"
+      "cover": "assets/covers/webstorm.jpg"
     },
     {
       "id": "cockpit-tools",
@@ -105,7 +105,7 @@
       ],
       "image": "./assets/cockpit-tools.png",
       "highlights": [],
-      "cover": "assets/covers/cockpit-tools.png"
+      "cover": "assets/covers/cockpit-tools.jpg"
     },
     {
       "id": "clash-verge",
@@ -135,7 +135,7 @@
       ],
       "image": "./assets/clash-verge.png",
       "highlights": [],
-      "cover": "assets/covers/clash-verge.png"
+      "cover": "assets/covers/clash-verge.jpg"
     },
     {
       "id": "deepseek-dsh",
@@ -164,7 +164,7 @@
       ],
       "image": "./assets/deepseek-dsh.png",
       "highlights": [],
-      "cover": "assets/covers/deepseek-dsh.jpg"
+      "cover": "assets/covers/deepseek-dsh-workspace.jpg"
     },
     {
       "id": "typora",
@@ -194,7 +194,7 @@
       ],
       "image": "./assets/typora.png",
       "highlights": [],
-      "cover": "assets/covers/typora.png"
+      "cover": "assets/covers/typora.jpg"
     },
     {
       "id": "snipaste",
@@ -224,7 +224,7 @@
       ],
       "image": "./assets/snipaste.svg",
       "highlights": [],
-      "cover": "assets/covers/snipaste.png"
+      "cover": "assets/covers/snipaste.jpg"
     },
     {
       "id": "uu-remote",
@@ -254,7 +254,7 @@
       ],
       "image": "./assets/uu-remote.ico",
       "highlights": [],
-      "cover": "assets/covers/uu-remote.png"
+      "cover": "assets/covers/uu-remote.jpg"
     },
     {
       "id": "ev-capture",
@@ -284,7 +284,7 @@
       ],
       "image": "./assets/ev-capture.png",
       "highlights": [],
-      "cover": "assets/covers/ev-capture.png"
+      "cover": "assets/covers/ev-capture.jpg"
     },
     {
       "id": "topaz-video-ai",
@@ -313,7 +313,7 @@
       ],
       "image": "./assets/topaz-video-ai.png",
       "highlights": [],
-      "cover": "assets/covers/topaz-video-ai.webp"
+      "cover": "assets/covers/topaz-video-ai.jpg"
     },
     {
       "id": "jianying",
@@ -342,7 +342,7 @@
       ],
       "image": "./assets/jianying.png",
       "highlights": [],
-      "cover": "assets/covers/jianying.png"
+      "cover": "assets/covers/jianying.jpg"
     },
     {
       "type": "bookmark",
@@ -355,7 +355,7 @@
         "对话"
       ],
       "image": "assets/deepseek-dsh.png",
-      "cover": "assets/covers/deepseek-dsh.jpg",
+      "cover": "assets/sites/deepseek-cover.jpg",
       "lists": [
         "bookmarks"
       ],
@@ -372,7 +372,7 @@
         "编程"
       ],
       "image": "assets/sites/glm.png",
-      "cover": "assets/sites/glm-cover.png",
+      "cover": "assets/sites/glm-coding-cover.jpg",
       "lists": [
         "bookmarks"
       ],
@@ -392,7 +392,8 @@
       "lists": [
         "bookmarks"
       ],
-      "highlights": []
+      "highlights": [],
+      "cover": "assets/sites/chatgpt-cover.png"
     },
     {
       "type": "bookmark",
@@ -405,7 +406,7 @@
         "用户中心"
       ],
       "image": "assets/sites/westdata.png",
-      "cover": "assets/sites/westdata-cover.svg",
+      "cover": "assets/sites/westdata-cover.jpg",
       "lists": [
         "bookmarks"
       ],
@@ -422,7 +423,7 @@
         "工作台"
       ],
       "image": "assets/sites/yeemagine.svg",
-      "cover": "assets/sites/yeemagine-cover.jpg",
+      "cover": "assets/sites/image-playground-cover.jpg",
       "lists": [
         "bookmarks"
       ],
@@ -442,7 +443,8 @@
       "lists": [
         "bookmarks"
       ],
-      "highlights": []
+      "highlights": [],
+      "cover": "assets/sites/linux-do-cover.jpg"
     }
   ]
 }
