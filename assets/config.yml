@@ -12,7 +12,7 @@
     "colorTheme": "auto",
     "iconWidth": "auto"
   },
-  "footer": "<p>SoftShelf · 个人软件收藏 // Powered by <a href=\"https://github.com/bastienwirtz/homer\" target=\"_blank\" rel=\"noreferrer\">Homer</a>, <a href=\"https://bulma.io/\" target=\"_blank\" rel=\"noreferrer\">Bulma</a>, <a href=\"https://vuejs.org/\" target=\"_blank\" rel=\"noreferrer\">Vue.js</a> &amp; <a href=\"https://fontawesome.com/\" target=\"_blank\" rel=\"noreferrer\">Font Awesome</a></p>",
+  "footer": false,
   "message": {
     "style": "is-dark",
     "title": "👋 欢迎来到我的软件架",
