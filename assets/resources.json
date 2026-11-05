@@ -1,24 +1,24 @@
 {
   "title": "SoftShelf",
-  "description": "Software, bookmarks and projects in one place.",
+  "description": "软件、网页收藏与项目，一站整理。",
   "collections": [
     {
       "id": "software",
-      "name": "Software",
+      "name": "软件下载",
       "icon": "download",
-      "description": "Software packages and installation notes."
+      "description": "软件安装包与使用说明。"
     },
     {
       "id": "bookmarks",
-      "name": "Bookmarks",
+      "name": "网页收藏",
       "icon": "globe",
-      "description": "Official websites and useful links."
+      "description": "官方网站与实用链接。"
     },
     {
       "id": "projects",
-      "name": "Projects",
+      "name": "项目",
       "icon": "folder",
-      "description": "Source code and project links."
+      "description": "源代码与项目链接。"
     },
     {
       "id": "development-network",
@@ -374,7 +374,7 @@
     {
       "id": "jmeter-website",
       "type": "bookmark",
-      "name": "Apache JMeter · Official",
+      "name": "Apache JMeter · 官网",
       "subtitle": "把性能，交给数据说话。",
       "description": "Apache 开源性能测试工具。组织接口请求、模拟并发负载，观察服务在压力下的响应表现。",
       "url": "https://jmeter.apache.org/download_jmeter.cgi",
@@ -393,7 +393,7 @@
     {
       "id": "webstorm-website",
       "type": "bookmark",
-      "name": "WebStorm · Official",
+      "name": "WebStorm · 官网",
       "subtitle": "让开发，更加顺手。",
       "description": "面向 JavaScript 和 TypeScript 的集成开发环境，提供代码编辑、调试与项目管理能力。",
       "url": "https://www.jetbrains.com/webstorm/",
@@ -413,7 +413,7 @@
     {
       "id": "cockpit-tools-website",
       "type": "bookmark",
-      "name": "Cockpit Tools · Official",
+      "name": "Cockpit Tools · 官网",
       "subtitle": "把工具，放在手边。",
       "description": "AI 编程工具账号管理应用，支持多账号切换与配额查看。本站保存版本为 1.3.56 x64。",
       "url": "https://github.com/jlcodes99/cockpit-tools",
@@ -432,7 +432,7 @@
     {
       "id": "clash-verge-website",
       "type": "bookmark",
-      "name": "Clash Verge Rev · Official",
+      "name": "Clash Verge Rev · 官网",
       "subtitle": "让网络配置，有条有理。",
       "description": "Clash Verge 的社区后续维护版本。通过图形界面管理代理配置、连接与规则。",
       "url": "https://github.com/clash-verge-rev/clash-verge-rev",
@@ -451,7 +451,7 @@
     {
       "id": "typora-website",
       "type": "bookmark",
-      "name": "Typora · Official",
+      "name": "Typora · 官网",
       "subtitle": "让文字回归文字。",
       "description": "专注写作的 Markdown 编辑器。所见即所得，让笔记、文档与灵感自然成形。",
       "url": "https://typora.io/",
@@ -470,7 +470,7 @@
     {
       "id": "snipaste-website",
       "type": "bookmark",
-      "name": "Snipaste · Official",
+      "name": "Snipaste · 官网",
       "subtitle": "截下灵感，贴在眼前。",
       "description": "截图，也不止截图。快速标注、取色，把参考内容贴在桌面，让思路保持连贯。",
       "url": "https://www.snipaste.com/",
@@ -489,7 +489,7 @@
     {
       "id": "uu-remote-website",
       "type": "bookmark",
-      "name": "UU 远程 · Official",
+      "name": "UU 远程 · 官网",
       "subtitle": "不在身边，也能随手连接。",
       "description": "网易出品的远程控制工具。远程连接电脑，在不同设备间处理工作、传递文件和协助操作。",
       "url": "https://uuyc.163.com/download/",
@@ -508,7 +508,7 @@
     {
       "id": "ev-capture-website",
       "type": "bookmark",
-      "name": "EV 录屏 · Official",
+      "name": "EV 录屏 · 官网",
       "subtitle": "把屏幕里的精彩，留下来。",
       "description": "集屏幕录制与直播于一体的工具。录制教程、操作演示和屏幕内容，记录每一个值得分享的过程。",
       "url": "https://www.ieway.cn/evcapture.html",

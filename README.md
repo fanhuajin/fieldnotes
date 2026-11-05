@@ -9,7 +9,7 @@
 - 搜索资源，点击标签筛选；按 `/` 聚焦搜索，`Esc` 关闭菜单、详情或清空搜索。
 - 卡片标题和封面下载或打开网站；右下角展开图标查看详情与安装说明。
 - 悬停显示右上角选择按钮；选中后底部出现操作栏，支持批量复制链接、收藏、归档、导出 JSON、全选和取消。触屏直接显示选择按钮。
-- View Options 支持四种布局、列数和显示选项；头像菜单切换浅色、深色或系统主题。
+- 「显示设置」支持四种布局、列数和显示选项；头像菜单切换浅色、深色或系统主题。
 
 收藏、归档及显示偏好只保存在当前浏览器，不修改仓库、不跨设备同步。页面没有账户、在线编辑、爬虫或 AI 后端；新增内容通过静态配置维护。原版 Next.js 业务脚本依赖服务端，本站使用静态适配脚本承接交互。
 
@@ -58,11 +58,11 @@ Topaz Video AI 与剪映的原始 RAR 内容保持不变，外层 ZIP 与内层 
 
 type 支持 software、bookmark、project；图片使用本地 assets/ 路径，lists 引用 collections[].id，同一资源可属于多个列表。现有 8 个网页收藏来自原配置中的官网地址，项目区包含本站 GitHub 仓库，软件分类按数量 5、4、2 排列。
 
-软件条目继续维护 fileName、localSize、platform、usage、note、tips 等原有元数据；上传 Releases 后更新 url。加密包与密码未更改，密码不得写入网页、配置或 Git。默认按配置顺序展示，Newest First 反转该顺序。
+软件条目继续维护 fileName、localSize、platform、usage、note、tips 等原有元数据；上传 Releases 后更新 url。加密包与密码未更改，密码不得写入网页、配置或 Git。默认按配置顺序展示，「最新在前」反转该顺序。
 
 ## 来源与许可证
 
-静态前端遵循 AGPL-3.0，见 [LICENSE](LICENSE)。原版 CSS 与字体文件保持原样；Logo 图形提取自原版 SVG，仅替换文字名称；图标使用原版 Lucide 路径。Inter 遵循 OFL，Lucide 许可证另附。Preferences → Source Code 提供对应源码。
+静态前端遵循 AGPL-3.0，见 [LICENSE](LICENSE)。原版 CSS 与字体文件保持原样；Logo 图形提取自原版 SVG，仅替换文字名称；图标使用原版 Lucide 路径。Inter 遵循 OFL，Lucide 许可证另附。偏好设置 → 源代码 提供对应源码。
 
 软件、软件图标及商标属于各自权利人，软件包不包含在前端许可证授权中。本项目不代表软件官方站点或合作方。
 
