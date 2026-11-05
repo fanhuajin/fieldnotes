@@ -1,6 +1,6 @@
 {
   "title": "SoftShelf",
-  "description": "软件、网页收藏与项目，一站整理。",
+  "description": "软件与网页收藏，集中整理。",
   "collections": [
     {
       "id": "software",
@@ -13,33 +13,6 @@
       "name": "网页收藏",
       "icon": "globe",
       "description": "官方网站与实用链接。"
-    },
-    {
-      "id": "projects",
-      "name": "项目",
-      "icon": "folder",
-      "description": "源代码与项目链接。"
-    },
-    {
-      "id": "development-network",
-      "name": "开发与网络",
-      "icon": "code",
-      "parent": "software",
-      "description": "开发与网络"
-    },
-    {
-      "id": "office",
-      "name": "日常办公",
-      "icon": "monitor",
-      "parent": "software",
-      "description": "日常办公"
-    },
-    {
-      "id": "video",
-      "name": "视频创作",
-      "icon": "image",
-      "parent": "software",
-      "description": "视频创作"
     }
   ],
   "items": [
@@ -67,11 +40,11 @@
       "keywords": "开发 接口测试 性能压测 Apache 开源性能测试工具。组织接口请求、模拟并发负载，观察服务在压力下的响应表现。 解密后运行",
       "type": "software",
       "lists": [
-        "software",
-        "development-network"
+        "software"
       ],
       "image": "./assets/jmeter.png",
-      "highlights": []
+      "highlights": [],
+      "cover": "assets/covers/jmeter.png"
     },
     {
       "id": "webstorm",
@@ -98,11 +71,11 @@
       "keywords": "开发 JavaScript TypeScript 前端开发 面向 JavaScript 和 TypeScript 的集成开发环境，提供代码编辑、调试与项目管理能力。 解密后安装",
       "type": "software",
       "lists": [
-        "software",
-        "development-network"
+        "software"
       ],
       "image": "./assets/webstorm.png",
-      "highlights": []
+      "highlights": [],
+      "cover": "assets/covers/webstorm.png"
     },
     {
       "id": "cockpit-tools",
@@ -128,11 +101,11 @@
       "keywords": "开发 账号管理 配额查看 AI 编程工具账号管理应用，支持多账号切换与配额查看。本站保存版本为 1.3.56 x64。 解密后安装",
       "type": "software",
       "lists": [
-        "software",
-        "development-network"
+        "software"
       ],
       "image": "./assets/cockpit-tools.png",
-      "highlights": []
+      "highlights": [],
+      "cover": "assets/covers/cockpit-tools.png"
     },
     {
       "id": "clash-verge",
@@ -158,11 +131,11 @@
       "keywords": "网络 代理管理 规则配置 Clash Verge 的社区后续维护版本。通过图形界面管理代理配置、连接与规则。 解密后安装",
       "type": "software",
       "lists": [
-        "software",
-        "development-network"
+        "software"
       ],
       "image": "./assets/clash-verge.png",
-      "highlights": []
+      "highlights": [],
+      "cover": "assets/covers/clash-verge.png"
     },
     {
       "id": "deepseek-dsh",
@@ -187,11 +160,11 @@
       "keywords": "浏览器 浏览器扩展 DSH助手 DSH 浏览器助手扩展与本地配套服务，提供浏览器内容读取和操作能力。 解密后配置",
       "type": "software",
       "lists": [
-        "software",
-        "development-network"
+        "software"
       ],
       "image": "./assets/deepseek-dsh.png",
-      "highlights": []
+      "highlights": [],
+      "cover": "assets/covers/deepseek-dsh.jpg"
     },
     {
       "id": "typora",
@@ -217,11 +190,11 @@
       "keywords": "写作 Markdown 专注写作 专注写作的 Markdown 编辑器。所见即所得，让笔记、文档与灵感自然成形。 解密后安装",
       "type": "software",
       "lists": [
-        "software",
-        "office"
+        "software"
       ],
       "image": "./assets/typora.png",
-      "highlights": []
+      "highlights": [],
+      "cover": "assets/covers/typora.png"
     },
     {
       "id": "snipaste",
@@ -247,11 +220,11 @@
       "keywords": "截图 截图贴图 标注取色 截图，也不止截图。快速标注、取色，把参考内容贴在桌面，让思路保持连贯。 解密后运行",
       "type": "software",
       "lists": [
-        "software",
-        "office"
+        "software"
       ],
       "image": "./assets/snipaste.svg",
-      "highlights": []
+      "highlights": [],
+      "cover": "assets/covers/snipaste.png"
     },
     {
       "id": "uu-remote",
@@ -277,11 +250,11 @@
       "keywords": "远程 远程桌面 文件传输 网易出品的远程控制工具。远程连接电脑，在不同设备间处理工作、传递文件和协助操作。 解密后安装",
       "type": "software",
       "lists": [
-        "software",
-        "office"
+        "software"
       ],
       "image": "./assets/uu-remote.ico",
-      "highlights": []
+      "highlights": [],
+      "cover": "assets/covers/uu-remote.png"
     },
     {
       "id": "ev-capture",
@@ -307,11 +280,11 @@
       "keywords": "录屏 屏幕录制 音频采集 集屏幕录制与直播于一体的工具。录制教程、操作演示和屏幕内容，记录每一个值得分享的过程。 解密后安装",
       "type": "software",
       "lists": [
-        "software",
-        "office"
+        "software"
       ],
       "image": "./assets/ev-capture.png",
-      "highlights": []
+      "highlights": [],
+      "cover": "assets/covers/ev-capture.png"
     },
     {
       "id": "topaz-video-ai",
@@ -336,11 +309,11 @@
       "keywords": "视频 视频增强 AI处理 视频增强与画质处理工具。本地保存版本为 4.2.2，提供原始便携汉化压缩包。 解密后解压",
       "type": "software",
       "lists": [
-        "software",
-        "video"
+        "software"
       ],
       "image": "./assets/topaz-video-ai.png",
-      "highlights": []
+      "highlights": [],
+      "cover": "assets/covers/topaz-video-ai.webp"
     },
     {
       "id": "jianying",
@@ -365,182 +338,11 @@
       "keywords": "视频 视频剪辑 内容制作 视频剪辑与内容制作工具。提供本地保存的剪映便携压缩包，保留原包内容。 解密后解压",
       "type": "software",
       "lists": [
-        "software",
-        "video"
+        "software"
       ],
       "image": "./assets/jianying.png",
-      "highlights": []
-    },
-    {
-      "id": "jmeter-website",
-      "type": "bookmark",
-      "name": "Apache JMeter · 官网",
-      "subtitle": "把性能，交给数据说话。",
-      "description": "Apache 开源性能测试工具。组织接口请求、模拟并发负载，观察服务在压力下的响应表现。",
-      "url": "https://jmeter.apache.org/download_jmeter.cgi",
-      "image": "./assets/jmeter.png",
-      "tags": [
-        "接口测试",
-        "性能压测",
-        "官网"
-      ],
-      "lists": [
-        "bookmarks"
-      ],
-      "note": "Apache 开源性能测试工具。组织接口请求、模拟并发负载，观察服务在压力下的响应表现。",
-      "highlights": []
-    },
-    {
-      "id": "webstorm-website",
-      "type": "bookmark",
-      "name": "WebStorm · 官网",
-      "subtitle": "让开发，更加顺手。",
-      "description": "面向 JavaScript 和 TypeScript 的集成开发环境，提供代码编辑、调试与项目管理能力。",
-      "url": "https://www.jetbrains.com/webstorm/",
-      "image": "./assets/webstorm.png",
-      "tags": [
-        "JavaScript",
-        "TypeScript",
-        "前端开发",
-        "官网"
-      ],
-      "lists": [
-        "bookmarks"
-      ],
-      "note": "面向 JavaScript 和 TypeScript 的集成开发环境，提供代码编辑、调试与项目管理能力。",
-      "highlights": []
-    },
-    {
-      "id": "cockpit-tools-website",
-      "type": "bookmark",
-      "name": "Cockpit Tools · 官网",
-      "subtitle": "把工具，放在手边。",
-      "description": "AI 编程工具账号管理应用，支持多账号切换与配额查看。本站保存版本为 1.3.56 x64。",
-      "url": "https://github.com/jlcodes99/cockpit-tools",
-      "image": "./assets/cockpit-tools.png",
-      "tags": [
-        "账号管理",
-        "配额查看",
-        "官网"
-      ],
-      "lists": [
-        "bookmarks"
-      ],
-      "note": "AI 编程工具账号管理应用，支持多账号切换与配额查看。本站保存版本为 1.3.56 x64。",
-      "highlights": []
-    },
-    {
-      "id": "clash-verge-website",
-      "type": "bookmark",
-      "name": "Clash Verge Rev · 官网",
-      "subtitle": "让网络配置，有条有理。",
-      "description": "Clash Verge 的社区后续维护版本。通过图形界面管理代理配置、连接与规则。",
-      "url": "https://github.com/clash-verge-rev/clash-verge-rev",
-      "image": "./assets/clash-verge.png",
-      "tags": [
-        "代理管理",
-        "规则配置",
-        "官网"
-      ],
-      "lists": [
-        "bookmarks"
-      ],
-      "note": "Clash Verge 的社区后续维护版本。通过图形界面管理代理配置、连接与规则。",
-      "highlights": []
-    },
-    {
-      "id": "typora-website",
-      "type": "bookmark",
-      "name": "Typora · 官网",
-      "subtitle": "让文字回归文字。",
-      "description": "专注写作的 Markdown 编辑器。所见即所得，让笔记、文档与灵感自然成形。",
-      "url": "https://typora.io/",
-      "image": "./assets/typora.png",
-      "tags": [
-        "Markdown",
-        "专注写作",
-        "官网"
-      ],
-      "lists": [
-        "bookmarks"
-      ],
-      "note": "专注写作的 Markdown 编辑器。所见即所得，让笔记、文档与灵感自然成形。",
-      "highlights": []
-    },
-    {
-      "id": "snipaste-website",
-      "type": "bookmark",
-      "name": "Snipaste · 官网",
-      "subtitle": "截下灵感，贴在眼前。",
-      "description": "截图，也不止截图。快速标注、取色，把参考内容贴在桌面，让思路保持连贯。",
-      "url": "https://www.snipaste.com/",
-      "image": "./assets/snipaste.svg",
-      "tags": [
-        "截图贴图",
-        "标注取色",
-        "官网"
-      ],
-      "lists": [
-        "bookmarks"
-      ],
-      "note": "截图，也不止截图。快速标注、取色，把参考内容贴在桌面，让思路保持连贯。",
-      "highlights": []
-    },
-    {
-      "id": "uu-remote-website",
-      "type": "bookmark",
-      "name": "UU 远程 · 官网",
-      "subtitle": "不在身边，也能随手连接。",
-      "description": "网易出品的远程控制工具。远程连接电脑，在不同设备间处理工作、传递文件和协助操作。",
-      "url": "https://uuyc.163.com/download/",
-      "image": "./assets/uu-remote.ico",
-      "tags": [
-        "远程桌面",
-        "文件传输",
-        "官网"
-      ],
-      "lists": [
-        "bookmarks"
-      ],
-      "note": "网易出品的远程控制工具。远程连接电脑，在不同设备间处理工作、传递文件和协助操作。",
-      "highlights": []
-    },
-    {
-      "id": "ev-capture-website",
-      "type": "bookmark",
-      "name": "EV 录屏 · 官网",
-      "subtitle": "把屏幕里的精彩，留下来。",
-      "description": "集屏幕录制与直播于一体的工具。录制教程、操作演示和屏幕内容，记录每一个值得分享的过程。",
-      "url": "https://www.ieway.cn/evcapture.html",
-      "image": "./assets/ev-capture.png",
-      "tags": [
-        "屏幕录制",
-        "音频采集",
-        "官网"
-      ],
-      "lists": [
-        "bookmarks"
-      ],
-      "note": "集屏幕录制与直播于一体的工具。录制教程、操作演示和屏幕内容，记录每一个值得分享的过程。",
-      "highlights": []
-    },
-    {
-      "id": "softshelf-project",
-      "type": "project",
-      "name": "SoftShelf",
-      "subtitle": "Personal software and bookmark collection.",
-      "description": "软件下载、网页收藏与项目入口，统一整理在一个地方。",
-      "url": "https://github.com/fanhuajin/soft-shelf",
-      "image": "assets/logo.svg",
-      "tags": [
-        "GitHub",
-        "开源项目"
-      ],
-      "lists": [
-        "projects"
-      ],
-      "note": "SoftShelf 的源代码与使用说明。",
-      "highlights": []
+      "highlights": [],
+      "cover": "assets/covers/jianying.png"
     }
   ]
 }

@@ -1,6 +1,6 @@
 # SoftShelf
 
-软件下载、网页收藏和项目的静态资源库，使用 [Karakeep](https://github.com/karakeep-app/karakeep) 演示站 v0.34.1 的原版 CSS、Inter 字体、Logo 图形和 Lucide 图标，名称改为 SoftShelf。
+软件下载与网页收藏的静态资源库，使用 [Karakeep](https://github.com/karakeep-app/karakeep) 演示站 v0.34.1 的原版 CSS、Inter 字体、Logo 图形和 Lucide 图标，名称改为 SoftShelf。
 
 [访问网站](https://fanhuajin.github.io/soft-shelf/)
 
@@ -8,7 +8,7 @@
 
 - 搜索资源，点击标签筛选；按 `/` 聚焦搜索，`Esc` 关闭菜单、详情或清空搜索。
 - 卡片标题和封面下载或打开网站；右下角展开图标查看详情与安装说明。
-- 悬停显示右上角选择按钮；选中后底部出现操作栏，支持批量复制链接、收藏、归档、导出 JSON、全选和取消。触屏直接显示选择按钮。
+- 悬停显示右上角选择按钮；选中后底部出现操作栏，支持批量复制链接、收藏、归档、导出 JSON、全选和取消。触屏通过卡片操作菜单的「批量选择」进入选择模式。
 - 「显示设置」支持四种布局、列数和显示选项；头像菜单切换浅色、深色或系统主题。
 
 收藏、归档及显示偏好只保存在当前浏览器，不修改仓库、不跨设备同步。页面没有账户、在线编辑、爬虫或 AI 后端；新增内容通过静态配置维护。原版 Next.js 业务脚本依赖服务端，本站使用静态适配脚本承接交互。
@@ -45,7 +45,7 @@ Topaz Video AI 与剪映的原始 RAR 内容保持不变，外层 ZIP 与内层 
 
 - `assets/resources.json`：唯一资源配置，包含 collections 与 items。
 - `app.js`、`lib/resources.js`：静态交互、筛选和配置校验。
-- `style.css`：布局适配、悬浮操作栏及图标封面。
+- `style.css`：布局适配、悬浮操作栏及产品封面。
 - `vendor/karakeep/`：原版样式、字体、图标与许可证，来源及哈希见 [NOTICE.md](vendor/karakeep/NOTICE.md)。
 - `assets/`：本地软件图标与 Logo。
 - `downloads/`：已有加密包本地副本，不纳入 Git。
@@ -56,7 +56,7 @@ Topaz Video AI 与剪映的原始 RAR 内容保持不变，外层 ZIP 与内层 
 {"id":"example-site","type":"bookmark","name":"Example","url":"https://example.com/","image":"assets/example.png","description":"A useful website.","tags":["Tools"],"lists":["bookmarks"],"highlights":[]}
 ```
 
-type 支持 software、bookmark、project；图片使用本地 assets/ 路径，lists 引用 collections[].id，同一资源可属于多个列表。现有 8 个网页收藏来自原配置中的官网地址，项目区包含本站 GitHub 仓库，软件分类按数量 5、4、2 排列。
+type 支持 software、bookmark；image 保存原软件图标，cover 使用本地 assets/covers/ 宣传图路径（可选），lists 引用 collections[].id，同一资源可属于多个列表。网页收藏默认留空，只录入用户提供的链接；不自动生成官网收藏。已移除项目分类与独立搜索页面，顶部搜索框直接筛选当前内容。所有软件统一归入「软件下载」，不再保留子分类入口。
 
 软件条目继续维护 fileName、localSize、platform、usage、note、tips 等原有元数据；上传 Releases 后更新 url。加密包与密码未更改，密码不得写入网页、配置或 Git。默认按配置顺序展示，「最新在前」反转该顺序。
 

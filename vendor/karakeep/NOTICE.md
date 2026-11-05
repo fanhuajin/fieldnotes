@@ -20,3 +20,7 @@ app.js and style.css adapt the observed components and original CSS utilities to
 ## Licenses
 
 Karakeep: AGPL-3.0, LICENSE. Corresponding adapted source: https://github.com/fanhuajin/soft-shelf . Inter: SIL OFL, media/LICENSE.txt (rsms/inter). Lucide: icons/LICENSE. Software logos and third-party trademarks remain their owners property.
+
+## Card interaction extraction (2026-11-05)
+
+The hover selector, drag-handle and selection overlay use the original utility-class strings from BulkEditSelectionOverlay, HoverActionBar and DragHandle in apps/web/components/dashboard/bookmarks/BookmarkLayoutAdaptingCard.tsx at upstream commit 6a1e71d67c10b2f56d55e8d771be0dd0c2cf6316. The demo DOM capture confirmed the selector/handle classes. Original Circle/CircleCheck/GripVertical icon paths are used. Backend session/store bindings are replaced by the existing static selection state; custom hover/selected-background CSS was removed.

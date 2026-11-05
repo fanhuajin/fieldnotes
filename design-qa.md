@@ -2,53 +2,34 @@
 
 final result: passed
 
-## Scope and reference
+## 本次范围
 
-Reference: Karakeep public demo v0.34.1 at https://try.karakeep.com, plus the user's screenshot of hover selection and the floating bulk-action toolbar. Implementation: http://localhost:4173/ . This is a static GitHub Pages adaptation with the user's content, not a full Karakeep backend or a claim of pixel identity across different content.
+2026-11-05，按用户提供的 Karakeep 截图及实际演示站组件修正悬停、选中和图片展示；移除重复页头、独立搜索页、项目分类及自动生成的收藏。保留软件名称、原有下载地址和安装说明。
 
-Desktop source and implementation screenshots were opened together in one comparison input; mobile List screenshots were also opened together. Desktop capture used a 1440 × 1000 viewport; mobile checks requested 390 × 844. Native screenshot output is used without a simulated phone frame or image rescaling. Device pixel ratio was not overridden or independently measured; no pixel-difference score is claimed.
+## 原版组件与差异修复
 
-Evidence directory (local): C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1a92e-0fdd-74a3-8582-34f10808102c/
+原组件：apps/web/components/dashboard/bookmarks/BookmarkLayoutAdaptingCard.tsx，upstream commit 6a1e71d67c10b2f56d55e8d771be0dd0c2cf6316；并对照当前演示站 v0.34.1 的实际 DOM。
 
-- Source: karakeep-reference-desktop.png, karakeep-reference-settings.png, karakeep-reference-preview.png, karakeep-reference-mobile-list.png.
-- Implementation: softshelf-desktop.png, softshelf-selection.png, softshelf-preview.png, softshelf-mobile.png, softshelf-mobile-list.png.
-- The later files named reference-desktop-clean and reference-mobile-clean captured a navigation transition/All Lists; they are not used as Home or mobile comparison evidence.
+- P1：原先卡片选择及悬停使用自定义覆盖。现使用原版 HoverActionBar、DragHandle、BulkEditSelectionOverlay 的 utility 类及 Circle/CircleCheck/GripVertical 图标，移除自定义选中背景与悬停过渡。
+- P1：原先卡片高 362px，图片保留旧的 contain 偏好。现使用原版 h-96 卡片、h-56 图片及 LinkImage 的相对容器/绝对定位图片结构；升级布局偏好键，默认 cover。
+- 浏览器实测：网格/瀑布流卡片 384px、封面 224px、object-fit cover；列表封面 128px，没有残留 224px 最小高度。原站与本地 hover 过渡均为 box-shadow 0.15s cubic-bezier(0.4,0,0.2,1)。选择框 28×28px；选中覆盖 rgba(0,0,0,0.1)，z-index 50；全部 11 张卡片在选择模式显示圆形选择按钮。
 
-## Findings and fixes
+## 五项视觉核对
 
-1. P1, card selection: initial implementation omitted the hover selector and floating action bar shown in the user's reference. Added original icon controls, selected-card treatment, multi-selection, batch favourite/archive/restore/copy/export, select all and clear. The revised softshelf-selection capture visibly includes the selector and toolbar. Batch favourite and archive/restore were exercised in the browser.
-2. P2, cover imagery: initial cards enlarged small software icons inside large white covers. At the user's request, retain the software's real icon at a smaller size inside a white tile, centered on a restrained tinted cover. Fixed an initial cascade conflict that left this tile aligned at the top. The revised desktop and mobile captures show centered, proportional icons.
-3. P2, metadata typography: increased desktop metadata to the source's 16px scale; smaller mobile List metadata prevents overflow alongside actions.
-4. P2, direct preview routes: initial direct entry could leave the underlying page unrendered. Render the base resource page before reading a preview route. Reloading a direct JMeter preview was tested with all 20 resources still rendered behind the dialog.
+- 字体：沿用原版 Inter 和已获用户认可的中文界面，软件标题未改；平台与文件大小保持同字号。
+- 间距：最大内容宽 1400px 居中、卡片间距 16px，移除内容区重复分类标题和数量说明。
+- 色彩：原版背景、边框、hover 阴影与黑/白选择遮罩；不再使用自制彩色图标封面。
+- 图片：11 款产品均配置本地宣传图或界面截图，来源见 assets/covers/SOURCES.md；DSH 按用户指定使用 DeepSeek 品牌图。图片默认铺满裁切，允许通过原有图片选项改为完整显示。宣传素材不保证与下载包版本相同。
+- 内容：仅保留 11 个软件下载条目；网页收藏为空，等待用户提供链接；项目分类及三个软件子分类均已删除，所有软件统一属于「软件下载」。顶部搜索保留，旧搜索 URL 转至首页搜索。
 
-No unresolved P0/P1/P2 finding within the approved static adaptation scope.
+## 浏览器验证及证据
 
-## Required fidelity surfaces
+原版悬停截图与实现选中截图在同一输入中对照；图片内容不同，不宣称整页像素相同。已核对本地页面的选择遮罩、选择两个资源、清除选择、搜索仅匹配 1 个软件、空收藏、重复标题移除、旧搜索链接跳转，以及移动端菜单进入多选。控制台未报告错误。原有复制/导出功能未重新做端到端验证。
 
-- Typography: original Inter font files and original CSS utilities; source-sized 14px navigation, 18px card titles and 12px tags. Original SVG logo graphic with SoftShelf text replacing the source wordmark. Chinese content uses the platform font fallback.
-- Spacing/layout: source 64px header, responsive sidebar, 16px content/card gaps, native card radii and borders. Desktop column layout and mobile List/image alignment were compared; no horizontal page overflow or missing image was observed in the mobile check.
-- Color/tokens: original Karakeep foreground, background, muted, border and accent variables. Light/dark switching and source-like popovers work. Pastel cover colors are an explicitly requested content-image adaptation.
-- Images/icons: original logo path and original Lucide paths; original local software images retain proportions. No enlarged photo substitute, hotlinked demo imagery, or fabricated brand graphic. Focused inspection of the header, selectors, cards, toolbar and mobile rows supplemented the full-frame comparison.
-- Copy/content: SoftShelf brand and actual download metadata replace demo content. All fields in all 11 original software records were compared against the previous Git revision and preserved. Eight existing official website URLs and the actual repository form the Bookmarks and Projects lists. Interface controls use English.
+本地证据目录：C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1a92e-0fdd-74a3-8582-34f10808102c/
 
-## Interaction verification
+- softshelf-native-hover.jpg
+- softshelf-native-selected.jpg
+- softshelf-official-covers-mobile.jpg（早于最后的 cover 偏好迁移，仅作为移动入口验证记录）
 
-Browser verified: search and empty results; Software/Bookmarks/Projects counts; Masonry/Grid/List/Compact; Show Notes and Show Tags; image-fit menu selection; light/dark theme selection; preview and unchanged download href; direct preview reload; mobile list navigation; selection toolbar; batch favourites, archive and restore; clearing selection. No captured browser console error was reported during these checks.
-
-Automated checks verified: JS syntax; every original software field; collection filtering; multi-term search paths; tag counts; newest ordering; favourites/archive/highlights filters; invalid duplicate IDs; local image/font paths. No test-only file is retained.
-
-Clipboard writing and the browser export download were implemented but were not exercised end to end in this QA run. Download packages were not downloaded or installed again.
-
-## Expected differences and boundaries
-
-- Demo banner, server-backed item creation, account management, AI processing and destructive server deletion are omitted for the agreed static deployment. No non-working backend controls are presented.
-- The toolbar keeps applicable static actions; it does not modify the repository's source JSON. Favourites/archive/view preferences live in the current browser only.
-- Card images and metadata represent software packages rather than the demo's article photos and publication dates. Covers intentionally differ following the user's latest request.
-- The default order follows static configuration; Newest First reverses it rather than inventing publication timestamps.
-
-## Completion checks
-
-- Original CSS/font/icon assets and licenses included; obsolete Homer runtime removed.
-- Canonical static configuration and maintenance instructions documented.
-- Desktop/mobile captures reviewed after the cover and selection fixes.
-- No remaining blocking visual finding; backend parity is outside the agreed scope.
+当前无未解决 P0/P1/P2。已知边界：静态页面不提供 Karakeep 后端，选择/收藏/归档为浏览器状态；拖动手柄复制资源链接，不会修改仓库配置。

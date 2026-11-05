@@ -1,5 +1,5 @@
-import { icons } from './vendor/karakeep/icons.js?v=8467716af3a8';
-import { selectResources, collectTags, validateCatalog } from './lib/resources.js?v=33f35fdfc50e';
+import { icons } from './vendor/karakeep/icons.js?v=d835a7da8a17';
+import { selectResources, collectTags, validateCatalog } from './lib/resources.js?v=925b9ab07137';
 
 const $ = selector => document.querySelector(selector);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
@@ -7,7 +7,7 @@ const store = {
   read(key, fallback) { try { return JSON.parse(localStorage.getItem('softshelf-' + key)) ?? fallback; } catch { return fallback; } },
   write(key, value) { try { localStorage.setItem('softshelf-' + key, JSON.stringify(value)); } catch { /* View state still works when browser storage is unavailable. */ } },
 };
-const saved = store.read('view-v2', {});
+const saved = store.read('view-v3', {});
 const state = {
   page: 'home', query: '', tag: '', preview: null,
   layout: ['masonry', 'grid', 'list', 'compact'].includes(saved.layout) ? saved.layout : 'masonry',
@@ -16,12 +16,12 @@ const state = {
   fit: saved.fit === 'contain' ? 'contain' : 'cover',
   sort: saved.sort === 'newest' ? 'newest' : 'oldest',
   theme: ['light', 'dark', 'system'].includes(store.read('theme-v2', 'system')) ? store.read('theme-v2', 'system') : 'system',
-  favourites: [], archived: [], selected: [],
+  favourites: [], archived: [], selected: [], bulkEdit: false,
 };
 const media = matchMedia('(prefers-color-scheme: dark)');
 const btn = 'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50';
 const badge = 'inline-flex items-center rounded-full border border-transparent bg-secondary px-2.5 py-0.5 text-xs font-light text-gray-700 transition-colors hover:bg-foreground hover:text-secondary dark:text-gray-400';
-const mainNav = [['home', '首页', 'house'], ['search', '搜索', 'search'], ['tags', '标签', 'tag'], ['highlights', '摘录', 'highlighter'], ['archive', '归档', 'archive']];
+const mainNav = [['home', '首页', 'house'], ['tags', '标签', 'tag'], ['highlights', '摘录', 'highlighter'], ['archive', '归档', 'archive']];
 let catalog;
 let returnHash = '#/home';
 let menuTrigger;
@@ -33,19 +33,20 @@ function icon(name, size = 18) {
   return svg.replace(/width="[^"]*"/, `width="${size}"`).replace(/height="[^"]*"/, `height="${size}"`).replace(/class="[^"]*"/, '').replace('<svg', '<svg class="resource-icon"');
 }
 function route(page, tag = '') { return '#/' + page + (tag ? '?tag=' + encodeURIComponent(tag) : ''); }
-function saveView() { store.write('view-v2', Object.fromEntries(['layout', 'columns', 'notes', 'tags', 'title', 'fit', 'sort'].map(key => [key, state[key]]))); }
+function saveView() { store.write('view-v3', Object.fromEntries(['layout', 'columns', 'notes', 'tags', 'title', 'fit', 'sort'].map(key => [key, state[key]]))); }
 function applyTheme() {
   const dark = state.theme === 'dark' || (state.theme === 'system' && media.matches);
   document.documentElement.classList.toggle('dark', dark);
   document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
   $('#theme-quick')?.setAttribute('aria-label', dark ? '切换浅色主题' : '切换深色主题');
   $('#theme-quick')?.setAttribute('aria-pressed', String(dark));
+  if (state.bulkEdit && $('#content')) renderResources();
 }
 function href(item) { return item.type === 'software' && location.protocol === 'file:' ? './downloads/' + encodeURIComponent(item.fileName) : item.url; }
 function visible() { return selectResources(catalog.items, state); }
 function titleForPage() {
   if (state.page.startsWith('list/')) return catalog.collections.find(list => list.id === state.page.slice(5))?.name || '分类';
-  return ({home: '首页', search: '搜索', tags: '全部标签', lists: '全部列表', favourites: '收藏夹', highlights: '摘录', archive: '归档'})[state.page] || '未找到';
+  return ({home: '首页', tags: '全部标签', lists: '全部列表', favourites: '收藏夹', highlights: '摘录', archive: '归档'})[state.page] || '未找到';
 }
 function sidebarItem(page, label, mark, count = null, nested = false) {
   const active = state.page === page && !state.tag;
@@ -78,7 +79,7 @@ function shell() {
   $('#global-search').addEventListener('input', () => {
     state.query = $('#global-search').value;
     if (state.page === 'tags') { renderTags(); return; }
-    if (state.page === 'lists') { state.page = 'search'; renderNav(); }
+    if (state.page === 'lists') { state.page = 'home'; renderNav(); }
     const params = new URLSearchParams();
     if (state.query) params.set('q', state.query);
     if (state.tag) params.set('tag', state.tag);
@@ -100,10 +101,15 @@ function card(item, index) {
   const archived = state.archived.includes(item.id);
   const domain = new URL(item.url).hostname.replace(/^www\./, '');
   const meta = isSoftware ? item.localSize : domain;
-  const hue = [...item.id.replace(/-website$/, '')].reduce((sum, char) => sum + char.charCodeAt(0), 0) % 360;
-  const image = item.image ? `<a href="${esc(href(item))}" target="_blank" rel="noopener noreferrer" class="card-banner branded-banner" style="--cover-hue:${hue}" aria-label="${esc((isSoftware ? '下载 ' : '打开 ') + item.name)}" ${isSoftware ? `download="${esc(item.fileName)}"` : ''}><span class="cover-kind">${esc(isSoftware ? '软件' : item.type === 'project' ? '项目' : '网页收藏')}</span><span class="cover-logo"><img src="${esc(item.image)}" alt="${esc(item.name)}" loading="lazy" decoding="async" class="resource-cover" data-fit="${state.fit}"></span></a>` : '';
-  return `<article class="resource-card group relative flex flex-col overflow-hidden rounded-lg border border-border bg-card hover:shadow-lg hover:transition-shadow ${state.selected.includes(item.id) ? 'is-selected' : ''}" data-resource="${esc(item.id)}" data-order="${index}">
-    <button class="card-select" data-select="${esc(item.id)}" aria-label="选择 ${esc(item.name)}" aria-pressed="${state.selected.includes(item.id)}">${icon(state.selected.includes(item.id) ? 'check' : 'circle',18)}</button>${image}<div class="card-content flex h-full flex-col justify-between gap-2 overflow-hidden p-2"><div class="card-body flex flex-col gap-2 overflow-hidden">
+  const imageClass = state.fit === 'contain' ? 'object-contain' : 'object-cover';
+  const imageSize = ['masonry','grid'].includes(state.layout) ? 'h-56 min-h-56 w-full rounded-t-lg' : 'size-32 rounded-lg';
+  const image = item.cover ? `<div class="card-banner h-56 w-full shrink-0 overflow-hidden"><a href="${esc(href(item))}" target="_blank" rel="noopener noreferrer" class="${imageSize} ${imageClass}" aria-label="${esc((isSoftware ? '下载 ' : '打开 ') + item.name)}" ${isSoftware ? `download="${esc(item.fileName)}"` : ''}><div class="relative size-full flex-1"><img src="${esc(item.cover)}" alt="${esc(item.name)} 产品展示" loading="lazy" decoding="async" class="${imageSize} ${imageClass}" style="position:absolute;height:100%;width:100%;inset:0;color:transparent"></div></a></div>` : '';
+  // Original Karakeep BulkEditSelectionOverlay / HoverActionBar utility classes.
+  const overlay = state.bulkEdit ? `<button class="absolute left-0 top-0 z-50 h-full w-full ${state.selected.includes(item.id) ? 'bg-opacity-10' : 'bg-opacity-0'} ${document.documentElement.classList.contains('dark') ? 'bg-white' : 'bg-black'}" data-select="${esc(item.id)}" aria-label="选择 ${esc(item.name)}" aria-pressed="${state.selected.includes(item.id)}"></button>` : '';
+  const selector = `<div class="card-hover-actions z-[60] gap-1 rounded bg-white/50 p-1 backdrop-blur-sm transition-opacity duration-200 dark:bg-black/50 absolute right-2 top-2 ${state.bulkEdit ? 'pointer-events-auto flex opacity-100' : 'pointer-events-none hidden opacity-0 group-hover:opacity-100 [@media(pointer:fine)]:pointer-events-auto [@media(pointer:fine)]:flex'}"><button class="rounded p-0.5 hover:bg-background/50" data-select="${esc(item.id)}" aria-label="勾选 ${esc(item.name)}" title="批量选择" aria-pressed="${state.selected.includes(item.id)}">${icon(state.selected.includes(item.id) ? 'circle-check' : 'circle',16)}</button></div>`;
+  const drag = state.bulkEdit ? '' : `<div draggable="true" data-drag="${esc(item.id)}" class="absolute z-40 hidden cursor-grab rounded bg-background/70 p-0.5 opacity-0 shadow-sm transition-opacity duration-200 group-hover:opacity-100 [@media(pointer:fine)]:block left-2 top-2">${icon('grip-vertical',16).replace('resource-icon','resource-icon text-muted-foreground')}</div>`;
+  return `<article class="resource-card group relative flex flex-col overflow-hidden rounded-lg border border-border bg-card hover:shadow-lg hover:transition-shadow ${['masonry','grid'].includes(state.layout) ? 'h-96' : ''}" data-resource="${esc(item.id)}" data-order="${index}">
+    ${overlay}${drag}${selector}${image}<div class="card-content flex h-full flex-col justify-between gap-2 overflow-hidden p-2"><div class="card-body flex flex-col gap-2 overflow-hidden">
       ${state.title ? `<div class="line-clamp-2 shrink-0 overflow-hidden text-ellipsis break-words text-lg"><a href="${esc(href(item))}" target="_blank" rel="noopener noreferrer" ${isSoftware ? `download="${esc(item.fileName)}"` : ''}>${esc(item.name)}</a></div>` : ''}
       ${state.notes ? `<p class="card-note text-sm text-muted-foreground">${esc(item.description || item.subtitle || '')}</p>` : ''}
       ${state.tags ? `<div class="card-tags flex shrink-0 flex-wrap gap-1 overflow-hidden">${tagPills(item.tags)}</div>` : ''}
@@ -117,9 +123,7 @@ function emptyState(title = '未找到资源', message = '请尝试其他关键�
 }
 function renderResources() {
   const items = visible();
-  const collection = state.page.startsWith('list/') ? catalog.collections.find(list => list.id === state.page.slice(5)) : null;
-  let heading = '';
-  if (state.page !== 'home' || state.query || state.tag) heading = `<div class="collection-heading"><h1 class="text-2xl">${collection ? icon(collection.icon,24) : state.tag ? icon('tag',24) : ''}${esc(state.tag || (state.query ? '搜索' : titleForPage()))}</h1><p class="text-sm text-muted-foreground">${items.length} 项资源${state.query ? ' · ' + esc(state.query) : ''}</p>${state.tag ? `<a class="${btn}" href="${route(state.page)}" aria-label="清除标签筛选">${icon('x',16)} 清除标签</a>` : ''}</div>`;
+  const heading = state.tag ? `<div class="active-filter"><span class="text-sm text-muted-foreground">${esc(state.tag)}</span><a class="${btn}" href="${route(state.page)}" aria-label="清除标签筛选">${icon('x',16)} 清除标签</a></div>` : '';
   if (state.page === 'highlights') {
     const highlights = items.flatMap(item => (item.highlights || []).map(text => `<article class="highlight-card rounded-lg border bg-card p-4"><p>${esc(text)}</p><a href="#/preview/${encodeURIComponent(item.id)}" class="text-sm text-muted-foreground">${esc(item.name)}</a></article>`));
     $('#content').innerHTML = heading + (highlights.join('') || emptyState('暂无摘录','在资源配置中添加摘录后，将在这里显示。'));
@@ -132,14 +136,14 @@ function renderResources() {
     const columns = innerWidth < 640 ? 1 : Math.min(state.columns, innerWidth < 1000 ? 2 : state.columns);
     body = `<div class="resource-grid masonry-grid" style="--resource-columns:${columns}">${Array.from({length:columns},(_,index)=>`<div class="masonry-column">${nodes.filter((_,position)=>position % columns === index).join('')}</div>`).join('')}</div>`;
   } else body = `<div class="resource-grid ${state.layout}-grid" style="--resource-columns:${state.columns}">${nodes.join('')}</div>`;
-  $('#content').innerHTML = heading + (items.length ? body : emptyState(state.page === 'favourites' ? '暂无收藏' : state.page === 'archive' ? '暂无归档' : undefined, state.page === 'favourites' ? '通过卡片的操作菜单添加收藏。' : state.page === 'archive' ? '归档后的资源将在这里显示。' : undefined));
+  $('#content').innerHTML = heading + (items.length ? body : emptyState(state.page === 'favourites' ? '暂无收藏' : state.page === 'archive' ? '暂无归档' : state.page === 'list/bookmarks' ? '暂无网页收藏' : undefined, state.page === 'favourites' ? '通过卡片的操作菜单添加收藏。' : state.page === 'archive' ? '归档后的资源将在这里显示。' : state.page === 'list/bookmarks' ? '添加你提供的网址后，将在这里显示。' : undefined));
   $('#content').dataset.layout = state.layout;
   renderSelection();
 }
 function renderSelection() {
   let bar = $('#selection-bar');
   if (!bar) { bar = document.createElement('div'); bar.id = 'selection-bar'; bar.className = 'selection-bar rounded-lg border bg-background shadow-md'; bar.setAttribute('role','toolbar'); bar.setAttribute('aria-label','已选资源'); document.body.append(bar); }
-  bar.hidden = !state.selected.length;
+  bar.hidden = !state.bulkEdit;
   bar.innerHTML = [['copy','复制所选链接','link'],['favourite','收藏所选资源','star'],['archive',state.page === 'archive' ? '恢复所选资源' : '归档所选资源','archive'],['export','导出所选资源','download'],['all','全选当前资源','check'],['clear','取消选择','x']].map(([action,label,mark])=>`<button class="${btn} header-button" data-batch="${action}" aria-label="${label}" title="${label}">${icon(mark,18)}</button>`).join('') + `<span class="selection-count" role="status">已选 ${state.selected.length} 项</span>`;
 }
 async function batchAction(kind) {
@@ -156,21 +160,21 @@ async function batchAction(kind) {
       state[key] = kind === 'archive' && state.page === 'archive' ? state[key].filter(id=>!state.selected.includes(id)) : [...new Set([...state[key],...state.selected])];
       store.write(key+'-v2',state[key]);renderNav();
     }
-    state.selected=[];
+    state.selected=[];state.bulkEdit=false;
   }
   renderResources();
 }
 function renderTags() {
   const tags = collectTags(catalog.items).filter(tag=>tag.name.toLocaleLowerCase().includes(state.query.trim().toLocaleLowerCase()));
-  $('#content').innerHTML = `<div class="collection-heading"><h1 class="text-2xl">全部标签</h1><p class="text-sm text-muted-foreground">${tags.length} 个标签</p></div><section class="tag-section rounded-lg border bg-card p-6"><h2 class="text-2xl font-semibold">资源标签 <span class="${badge}">${tags.length}</span></h2><p class="text-sm text-muted-foreground">查看资源使用的标签。</p><div class="tag-directory">${tags.map(tag=>`<a class="tag-count rounded border bg-card" href="${route('home',tag.name)}"><span>${esc(tag.name)}</span><span class="text-muted-foreground">${tag.count}</span></a>`).join('') || '<p class="text-muted-foreground">未找到匹配的标签。</p>'}</div></section>`;
+  $('#content').innerHTML = `<section class="tag-section rounded-lg border bg-card p-6"><h2 class="text-2xl font-semibold">资源标签 <span class="${badge}">${tags.length}</span></h2><p class="text-sm text-muted-foreground">查看资源使用的标签。</p><div class="tag-directory">${tags.map(tag=>`<a class="tag-count rounded border bg-card" href="${route('home',tag.name)}"><span>${esc(tag.name)}</span><span class="text-muted-foreground">${tag.count}</span></a>`).join('') || '<p class="text-muted-foreground">未找到匹配的标签。</p>'}</div></section>`;
 }
 function renderLists() {
   const row = (page, name, mark, description, count) => `<a class="collection-row" href="${route(page)}"><span class="collection-icon rounded-lg border bg-muted">${icon(mark,24)}</span><span class="collection-copy"><span class="text-lg">${esc(name)}</span><span class="text-sm text-muted-foreground">${esc(description)}</span></span><span class="text-sm text-muted-foreground">${count} 项</span></a>`;
-  $('#content').innerHTML = `<div class="collection-heading"><h1 class="text-2xl">${icon('clipboard-list',24)} 全部列表</h1><p class="text-sm text-muted-foreground">${catalog.collections.length} 个列表 · ${catalog.items.length} 项资源</p></div><h2 class="section-label text-sm text-muted-foreground">常用</h2><div class="collection-directory rounded-lg border bg-card">${row('favourites','收藏夹','star','收藏常用的资源。',state.favourites.length)}${row('archive','归档','archive','暂时收起的资源。',state.archived.length)}</div><h2 class="section-label text-sm text-muted-foreground">全部</h2><div class="collection-directory rounded-lg border bg-card">${catalog.collections.map(list=>row('list/'+list.id,list.name,list.icon,list.description,catalog.items.filter(item=>item.lists.includes(list.id)).length)).join('')}</div>`;
+  $('#content').innerHTML = `<h2 class="section-label text-sm text-muted-foreground">常用</h2><div class="collection-directory rounded-lg border bg-card">${row('favourites','收藏夹','star','收藏常用的资源。',state.favourites.length)}${row('archive','归档','archive','暂时收起的资源。',state.archived.length)}</div><h2 class="section-label text-sm text-muted-foreground">全部</h2><div class="collection-directory rounded-lg border bg-card">${catalog.collections.map(list=>row('list/'+list.id,list.name,list.icon,list.description,catalog.items.filter(item=>item.lists.includes(list.id)).length)).join('')}</div>`;
 }
 function preview(item) {
   const isSoftware = item.type === 'software';
-  $('#preview').innerHTML = `<div class="preview-layout"><section class="preview-reader"><div class="preview-toolbar"><span class="reader-label">${icon('book-open',16)} ${isSoftware ? '软件详情' : '资源详情'}</span><button class="${btn} header-button" data-close="preview" aria-label="关闭预览">${icon('x')}</button></div><div class="reader-content"><img class="preview-image" src="${esc(item.image || 'assets/logo.svg')}" alt="${esc(item.name)}"><h2 id="preview-title" class="text-2xl font-semibold">${esc(item.name)}</h2><p class="text-muted-foreground">${esc(item.subtitle || '')}</p><p>${esc(item.description || '')}</p>${item.tips ? `<h3 class="text-lg font-semibold">安装说明</h3><p>${esc(item.tips)}</p>` : ''}${item.note && isSoftware ? `<div class="download-notice rounded-lg border bg-muted">${esc(item.note)}</div>` : ''}<a class="${btn} primary-action bg-primary text-primary-foreground hover:bg-primary/90" href="${esc(href(item))}" target="_blank" rel="noopener noreferrer" ${isSoftware ? `download="${esc(item.fileName)}"` : ''}>${icon(isSoftware ? 'download' : 'external-link')}${isSoftware ? '下载压缩包' : '打开网站'}</a></div></section><aside class="preview-info bg-accent/50"><h2 class="text-lg font-medium">${esc(item.name)}</h2><a class="text-sm text-muted-foreground preview-original" href="${esc(href(item))}" target="_blank" rel="noopener noreferrer">${icon('external-link',14)} ${isSoftware ? '下载原文件' : '查看原网页'}</a><div class="preview-info-section text-sm text-muted-foreground">${icon(isSoftware ? 'file-archive' : 'globe',16)} ${esc(isSoftware ? item.platform+' · '+item.localSize : new URL(item.url).hostname)}</div><div class="preview-info-section"><h3 class="section-label text-xs text-muted-foreground">标签</h3><div class="flex flex-wrap gap-1">${tagPills(item.tags)}</div></div><div class="preview-info-section"><h3 class="section-label text-xs text-muted-foreground">备注</h3><p class="text-sm text-muted-foreground">${esc(item.description || item.note || '暂无备注。')}</p></div><div class="preview-info-section"><h3 class="section-label text-xs text-muted-foreground">${isSoftware ? '安装包' : '分类'}</h3><p class="text-sm">${esc(isSoftware ? item.fileName : item.lists.map(id=>catalog.collections.find(list=>list.id===id)?.name).join(', '))}</p></div><div class="preview-info-actions"><button class="${btn} header-button ${state.favourites.includes(item.id) ? 'favourite-active' : ''}" data-favourite="${esc(item.id)}" aria-label="切换收藏 ${esc(item.name)}" aria-pressed="${state.favourites.includes(item.id)}">${icon('star')}</button><button class="${btn} header-button" data-archive="${esc(item.id)}" aria-label="${state.archived.includes(item.id) ? '恢复' : '归档'} ${esc(item.name)}">${icon('archive')}</button><button class="${btn} header-button" data-copy="${esc(item.id)}" aria-label="复制 ${esc(item.name)} 的链接">${icon('copy')}</button></div></aside></div>`;
+  $('#preview').innerHTML = `<div class="preview-layout"><section class="preview-reader"><div class="preview-toolbar"><span class="reader-label">${icon('book-open',16)} ${isSoftware ? '软件详情' : '资源详情'}</span><button class="${btn} header-button" data-close="preview" aria-label="关闭预览">${icon('x')}</button></div><div class="reader-content"><img class="preview-image" src="${esc(item.cover || item.image || 'assets/logo.svg')}" alt="${esc(item.name)}"><h2 id="preview-title" class="text-2xl font-semibold">${esc(item.name)}</h2><p class="text-muted-foreground">${esc(item.subtitle || '')}</p><p>${esc(item.description || '')}</p>${item.tips ? `<h3 class="text-lg font-semibold">安装说明</h3><p>${esc(item.tips)}</p>` : ''}${item.note && isSoftware ? `<div class="download-notice rounded-lg border bg-muted">${esc(item.note)}</div>` : ''}<a class="${btn} primary-action bg-primary text-primary-foreground hover:bg-primary/90" href="${esc(href(item))}" target="_blank" rel="noopener noreferrer" ${isSoftware ? `download="${esc(item.fileName)}"` : ''}>${icon(isSoftware ? 'download' : 'external-link')}${isSoftware ? '下载压缩包' : '打开网站'}</a></div></section><aside class="preview-info bg-accent/50"><h2 class="text-lg font-medium">${esc(item.name)}</h2><a class="text-sm text-muted-foreground preview-original" href="${esc(href(item))}" target="_blank" rel="noopener noreferrer">${icon('external-link',14)} ${isSoftware ? '下载原文件' : '查看原网页'}</a><div class="preview-info-section text-sm text-muted-foreground">${icon(isSoftware ? 'file-archive' : 'globe',16)} ${esc(isSoftware ? item.platform+' · '+item.localSize : new URL(item.url).hostname)}</div><div class="preview-info-section"><h3 class="section-label text-xs text-muted-foreground">标签</h3><div class="flex flex-wrap gap-1">${tagPills(item.tags)}</div></div><div class="preview-info-section"><h3 class="section-label text-xs text-muted-foreground">备注</h3><p class="text-sm text-muted-foreground">${esc(item.description || item.note || '暂无备注。')}</p></div><div class="preview-info-section"><h3 class="section-label text-xs text-muted-foreground">${isSoftware ? '安装包' : '分类'}</h3><p class="text-sm">${esc(isSoftware ? item.fileName : item.lists.map(id=>catalog.collections.find(list=>list.id===id)?.name).join(', '))}</p></div><div class="preview-info-actions"><button class="${btn} header-button ${state.favourites.includes(item.id) ? 'favourite-active' : ''}" data-favourite="${esc(item.id)}" aria-label="切换收藏 ${esc(item.name)}" aria-pressed="${state.favourites.includes(item.id)}">${icon('star')}</button><button class="${btn} header-button" data-archive="${esc(item.id)}" aria-label="${state.archived.includes(item.id) ? '恢复' : '归档'} ${esc(item.name)}">${icon('archive')}</button><button class="${btn} header-button" data-copy="${esc(item.id)}" aria-label="复制 ${esc(item.name)} 的链接">${icon('copy')}</button></div></aside></div>`;
   if (!$('#preview').open) $('#preview').showModal();
 }
 function readLocation() {
@@ -183,9 +187,10 @@ function readLocation() {
     location.hash = '#/home'; return;
   }
   state.preview = null;
-  state.selected = []; renderSelection();
+  state.selected = []; state.bulkEdit=false; renderSelection();
   if ($('#preview').open) $('#preview').close();
   const params = new URLSearchParams(query);
+  if (path === 'search') { location.replace('#/home'+(query ? '?'+query : '')); return; }
   state.page = path || 'home'; state.query = params.get('q') || ''; state.tag = params.get('tag') || '';
   $('#global-search').value = state.query;
   renderNav();
@@ -194,7 +199,6 @@ function readLocation() {
   else if (mainNav.some(([page])=>page===state.page) || state.page === 'favourites' || catalog.collections.some(list=>'list/'+list.id===state.page)) renderResources();
   else $('#content').innerHTML = emptyState('页面不存在','请从侧栏选择分类。');
   $('#main-content').scrollTop = 0;
-  if (state.page === 'search') $('#global-search').focus();
 }
 function menuRow(action, text, mark, selected = false, attrs = '') {
   return `<button role="menuitem" class="menu-row text-sm rounded-sm hover:bg-accent" data-action="${action}" ${attrs}>${icon(mark,16)}<span>${text}</span>${selected ? icon('check',16) : ''}</button>`;
@@ -221,7 +225,7 @@ function openMenu(trigger, type) {
     content += '<div class="menu-divider"></div>' + menuRow('shortcuts','快捷键','keyboard') + `<a role="menuitem" class="menu-row text-sm rounded-sm hover:bg-accent" href="https://github.com/fanhuajin/soft-shelf#软件与使用方式" target="_blank" rel="noopener noreferrer">${icon('book-open',16)}<span>使用说明</span></a><a role="menuitem" class="menu-row text-sm rounded-sm hover:bg-accent" href="https://github.com/fanhuajin/soft-shelf" target="_blank" rel="noopener noreferrer">${icon('code',16)}<span>源代码</span></a>`;
   } else {
     const item = catalog.items.find(item=>item.id===trigger.dataset.id); if (!item) { closeMenu(); return; }
-    content = menuRow('open-preview','预览','maximize2',false,`data-value="${esc(item.id)}"`) + menuRow('favourite',state.favourites.includes(item.id)?'取消收藏':'添加收藏','star',false,`data-value="${esc(item.id)}"`) + menuRow('archive',state.archived.includes(item.id)?'取消归档':'归档','archive',false,`data-value="${esc(item.id)}"`) + menuRow('copy','复制链接','copy',false,`data-value="${esc(item.id)}"`);
+    content = menuRow('open-preview','预览','maximize2',false,`data-value="${esc(item.id)}"`) + menuRow('select','批量选择','circle',false,`data-value="${esc(item.id)}"`) + menuRow('favourite',state.favourites.includes(item.id)?'取消收藏':'添加收藏','star',false,`data-value="${esc(item.id)}"`) + menuRow('archive',state.archived.includes(item.id)?'取消归档':'归档','archive',false,`data-value="${esc(item.id)}"`) + menuRow('copy','复制链接','copy',false,`data-value="${esc(item.id)}"`);
   }
   $('#menu-layer').innerHTML = `<div role="menu" class="resource-menu ${type === 'view' ? 'view-menu' : ''} rounded-md border bg-popover p-1 text-popover-foreground shadow-md" aria-label="${type==='view'?'显示设置':type==='sort'?'排序':type==='profile'?'偏好设置':'资源操作'}">${content}</div>`;
   const menu = $('#menu-layer > div'), box = trigger.getBoundingClientRect();
@@ -254,6 +258,7 @@ function action(button) {
     case 'set-theme': state.theme=value;store.write('theme-v2',value);applyTheme();closeMenu();break;
     case 'shortcuts': closeMenu();$('#shortcut-dialog').showModal();break;
     case 'open-preview': closeMenu(false);returnHash=location.hash||'#/home';location.hash='#/preview/'+encodeURIComponent(value);break;
+    case 'select': closeMenu(false);state.bulkEdit=true;state.selected=[...new Set([...state.selected,value])];renderResources();break;
     case 'favourite': closeMenu(false);toggleLocal('favourites',value);break;
     case 'archive': closeMenu(false);toggleLocal('archived',value);break;
     case 'copy': closeMenu();void copyLink(value);break;
@@ -275,7 +280,7 @@ async function init() {
     const button=event.target.closest('button,a');
     if (!button) {if(!event.target.closest('[role=menu]'))closeMenu(false);return;}
     if (button.dataset.menu) {openMenu(button,button.dataset.menu);return;}
-    if (button.dataset.select) { const id=button.dataset.select;state.selected=state.selected.includes(id)?state.selected.filter(value=>value!==id):[...state.selected,id];renderResources();return; }
+    if (button.dataset.select) { const id=button.dataset.select;state.bulkEdit=true;state.selected=state.selected.includes(id)?state.selected.filter(value=>value!==id):[...state.selected,id];renderResources();return; }
     if (button.dataset.batch) { void batchAction(button.dataset.batch); return; }
     if (!event.target.closest('[role=menu]'))closeMenu(false);
     if (button.dataset.preview) returnHash=location.hash||'#/home';
@@ -291,7 +296,8 @@ async function init() {
     if (event.key==='/'&&!event.ctrlKey&&!event.metaKey&&!event.altKey&&!event.target.closest('input,textarea,[contenteditable]')&&!$('dialog[open]')) {event.preventDefault();$('#global-search').focus();}
     if (['ArrowDown','ArrowUp','首页','End'].includes(event.key) && event.target.closest('[role=menu]') && event.target.type!=='range') {const elements=[...$('[role=menu]').querySelectorAll('button,a,input')];let index=elements.indexOf(document.activeElement);index=event.key==='首页'?0:event.key==='End'?elements.length-1:(index+(event.key==='ArrowDown'?1:-1)+elements.length)%elements.length;event.preventDefault();elements[index]?.focus();}
   });
-  document.addEventListener('error',event=>{if(event.target.matches?.('.resource-cover')){event.target.hidden=true;event.target.parentElement.classList.add('image-failed');}},true);
+  document.addEventListener('error',event=>{if(event.target.closest?.('.card-banner')){event.target.closest('.card-banner').hidden=true;}},true);
+  document.addEventListener('dragstart',event=>{const handle=event.target.closest('[data-drag]');if(!handle)return;const item=catalog.items.find(item=>item.id===handle.dataset.drag);if(item){event.dataTransfer.setData('text/uri-list',item.url);event.dataTransfer.setData('text/plain',item.url);event.dataTransfer.effectAllowed='copy';}});
 }
 init().catch(error=>{
   $('#app').innerHTML=`<main class="load-error rounded-lg border bg-card p-6"><h1 class="text-2xl">无法加载 SoftShelf</h1><p>${esc(error.message)}</p><p class="text-sm text-muted-foreground">请检查 assets/resources.json，并通过 HTTP 访问本站。</p><button class="primary-action bg-primary text-primary-foreground" id="reload-app">重新加载</button></main>`;
