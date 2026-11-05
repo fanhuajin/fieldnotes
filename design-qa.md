@@ -33,3 +33,7 @@ final result: passed
 - softshelf-official-covers-mobile.jpg（早于最后的 cover 偏好迁移，仅作为移动入口验证记录）
 
 当前无未解决 P0/P1/P2。已知边界：静态页面不提供 Karakeep 后端，选择/收藏/归档为浏览器状态；拖动手柄复制资源链接，不会修改仓库配置。
+
+## 完整说明显示修正
+
+按用户要求，默认开启说明，卡片由固定 384px 改为最小 384px 并随内容撑高，移除说明的行数截断。布局偏好迁移至 v4，保留列数、主题等偏好，并为旧安装默认开启说明；之后仍记住用户主动关闭。浏览器验证四种布局均显示 11 条说明，说明和父容器 scrollHeight 均未超过 clientHeight（1px 容差），没有发现文字裁剪。截图：softshelf-full-descriptions.jpg（同上证据目录）。

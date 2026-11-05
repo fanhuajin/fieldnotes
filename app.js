@@ -7,12 +7,13 @@ const store = {
   read(key, fallback) { try { return JSON.parse(localStorage.getItem('softshelf-' + key)) ?? fallback; } catch { return fallback; } },
   write(key, value) { try { localStorage.setItem('softshelf-' + key, JSON.stringify(value)); } catch { /* View state still works when browser storage is unavailable. */ } },
 };
-const saved = store.read('view-v3', {});
+// Enable descriptions once for existing installs while retaining other view preferences.
+const saved = store.read('view-v4', { ...store.read('view-v3', {}), notes: true });
 const state = {
   page: 'home', query: '', tag: '', preview: null,
   layout: ['masonry', 'grid', 'list', 'compact'].includes(saved.layout) ? saved.layout : 'masonry',
   columns: [2, 3, 4, 5].includes(saved.columns) ? saved.columns : 3,
-  notes: saved.notes === true, tags: saved.tags !== false, title: saved.title !== false,
+  notes: saved.notes !== false, tags: saved.tags !== false, title: saved.title !== false,
   fit: saved.fit === 'contain' ? 'contain' : 'cover',
   sort: saved.sort === 'newest' ? 'newest' : 'oldest',
   theme: ['light', 'dark', 'system'].includes(store.read('theme-v2', 'system')) ? store.read('theme-v2', 'system') : 'system',
@@ -33,7 +34,7 @@ function icon(name, size = 18) {
   return svg.replace(/width="[^"]*"/, `width="${size}"`).replace(/height="[^"]*"/, `height="${size}"`).replace(/class="[^"]*"/, '').replace('<svg', '<svg class="resource-icon"');
 }
 function route(page, tag = '') { return '#/' + page + (tag ? '?tag=' + encodeURIComponent(tag) : ''); }
-function saveView() { store.write('view-v3', Object.fromEntries(['layout', 'columns', 'notes', 'tags', 'title', 'fit', 'sort'].map(key => [key, state[key]]))); }
+function saveView() { store.write('view-v4', Object.fromEntries(['layout', 'columns', 'notes', 'tags', 'title', 'fit', 'sort'].map(key => [key, state[key]]))); }
 function applyTheme() {
   const dark = state.theme === 'dark' || (state.theme === 'system' && media.matches);
   document.documentElement.classList.toggle('dark', dark);
@@ -108,7 +109,7 @@ function card(item, index) {
   const overlay = state.bulkEdit ? `<button class="absolute left-0 top-0 z-50 h-full w-full ${state.selected.includes(item.id) ? 'bg-opacity-10' : 'bg-opacity-0'} ${document.documentElement.classList.contains('dark') ? 'bg-white' : 'bg-black'}" data-select="${esc(item.id)}" aria-label="选择 ${esc(item.name)}" aria-pressed="${state.selected.includes(item.id)}"></button>` : '';
   const selector = `<div class="card-hover-actions z-[60] gap-1 rounded bg-white/50 p-1 backdrop-blur-sm transition-opacity duration-200 dark:bg-black/50 absolute right-2 top-2 ${state.bulkEdit ? 'pointer-events-auto flex opacity-100' : 'pointer-events-none hidden opacity-0 group-hover:opacity-100 [@media(pointer:fine)]:pointer-events-auto [@media(pointer:fine)]:flex'}"><button class="rounded p-0.5 hover:bg-background/50" data-select="${esc(item.id)}" aria-label="勾选 ${esc(item.name)}" title="批量选择" aria-pressed="${state.selected.includes(item.id)}">${icon(state.selected.includes(item.id) ? 'circle-check' : 'circle',16)}</button></div>`;
   const drag = state.bulkEdit ? '' : `<div draggable="true" data-drag="${esc(item.id)}" class="absolute z-40 hidden cursor-grab rounded bg-background/70 p-0.5 opacity-0 shadow-sm transition-opacity duration-200 group-hover:opacity-100 [@media(pointer:fine)]:block left-2 top-2">${icon('grip-vertical',16).replace('resource-icon','resource-icon text-muted-foreground')}</div>`;
-  return `<article class="resource-card group relative flex flex-col overflow-hidden rounded-lg border border-border bg-card hover:shadow-lg hover:transition-shadow ${['masonry','grid'].includes(state.layout) ? 'h-96' : ''}" data-resource="${esc(item.id)}" data-order="${index}">
+  return `<article class="resource-card group relative flex flex-col overflow-hidden rounded-lg border border-border bg-card hover:shadow-lg hover:transition-shadow" data-resource="${esc(item.id)}" data-order="${index}">
     ${overlay}${drag}${selector}${image}<div class="card-content flex h-full flex-col justify-between gap-2 overflow-hidden p-2"><div class="card-body flex flex-col gap-2 overflow-hidden">
       ${state.title ? `<div class="shrink-0 overflow-hidden text-lg"><a class="flex items-start gap-2" href="${esc(href(item))}" target="_blank" rel="noopener noreferrer" ${isSoftware ? `download="${esc(item.fileName)}"` : ''}>${isSoftware && item.image ? `<img class="software-icon mt-0.5 size-6 shrink-0 rounded object-contain" src="${esc(item.image)}" alt="" aria-hidden="true" loading="lazy" decoding="async">` : ''}<span class="card-title-text line-clamp-2 min-w-0 break-words">${esc(item.name)}</span></a></div>` : ''}
       ${state.notes ? `<p class="card-note text-sm text-muted-foreground">${esc(item.description || item.subtitle || '')}</p>` : ''}
