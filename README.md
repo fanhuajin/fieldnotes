@@ -2,18 +2,18 @@
 
 一个简洁的个人软件收藏与下载页面，整理日常使用的写作、截图、远程、录屏、开发和网络工具。
 
-界面样式与交互参考开源项目 [Homer](https://github.com/bastienwirtz/homer) 的[在线演示](https://homer-demo.netlify.app/)，采用双层蓝色页头、欢迎说明与紧凑分组卡片。使用现有 HTML、CSS 和原生 JavaScript 实现，保留软件搜索、分类及下载能力。
+直接使用开源项目 [Homer](https://github.com/bastienwirtz/homer) [在线演示](https://homer-demo.netlify.app/) 的原版 CSS、JavaScript 和本地字体，通过配置替换为本项目的软件与下载内容。没有另写一套仿制样式。
 
 [访问网站](https://fanhuajin.github.io/soft-shelf/)
 
 ## 功能
 
-- 按软件名称、用途和标签搜索，按分类筛选。
-- 支持深浅主题、横排与分栏布局切换，手机端导航可展开。
-- 点击软件卡片直接下载，右侧详情入口可查看解压与安装说明。
-- 适配桌面与手机，支持键盘操作和减少动态效果设置。
+- 使用 Homer 原生搜索，匹配软件名称、用途、分类和标签；搜索结果合并展示。
+- 保留原生自动／浅色／深色主题切换、横排／分栏切换、悬停标签和手机端菜单。
+- 点击软件卡片下载，顶部「使用说明」查看解压与安装方式。
+- 分栏时同组卡片连成列表，横排时显示独立卡片；页脚固定在底部。
 
-主题和布局偏好保存在当前浏览器，无需登录。按 `/` 聚焦搜索，搜索框中按 `Esc` 清空关键词。
+主题和布局偏好由 Homer 保存在当前浏览器。按 `/` 聚焦搜索，`Esc` 清空并退出搜索，`Enter` 打开首个结果，`Alt+Enter` 在新窗口打开。搜索关键词同步到 URL，可复制分享。
 
 ## 软件与使用方式
 
@@ -41,21 +41,20 @@ Topaz Video AI 与剪映的原始 RAR 内容保持不变，外层 ZIP 与内层 
 
 请使用支持 AES-256 ZIP 的解压工具，例如 7-Zip 或 WinRAR。JMeter 运行包中的 `runtime`、`bin` 和 `lib` 等目录需要完整保留。
 
-直接打开 `index.html` 可查看页面；离线下载时，将加密附件以原名放入本地 `downloads/` 目录。
+Homer 需要通过 HTTP(S) 访问，不支持直接双击 `index.html`。本地预览可在项目目录运行 `npx http-server . -p 4173`，再访问 `http://localhost:4173`。页面默认从 Releases 下载软件包；本地 `downloads/` 仍保留已有加密附件副本，不纳入 Git。
 
 ## 维护与部署
 
-页面使用 HTML、CSS 和原生 JavaScript，无需安装依赖或构建。
+页面运行原版 Homer 静态发行资源，无需构建。
 
-- `software.js`：软件名称、版本说明、分类、图标和下载文件。
-- `app.js`：搜索、筛选、主题及下载交互。
-- `style.css`：页面样式与响应式布局。
-- `assets/`：软件图标。
-- `downloads/`：加密软件包的本地副本，不纳入 Git 提交。
+- `assets/config.yml`：Homer 原生配置，使用 JSON 兼容的 YAML 格式；包含页头、说明、导航、分类和所有软件下载元数据。
+- `vendor/homer/`：演示站原版 CSS、JavaScript、字体及许可证。文件来源与 SHA-256 见 `vendor/homer/NOTICE.md`。
+- `assets/`：本地软件图标。
+- `downloads/`：加密软件包的本地副本，不纳入 Git。
 
-新增或替换软件时，先加密并验证 ZIP，再上传 Releases，同步更新 `software.js` 中的 `fileName`、`releaseUrl`、`localSize`、`usage`、`note`。密码不得写入网页、脚本、文档或 Git。分类自动生成；显示名称可在 `app.js` 的 `categoryNames` 中调整。
+新增或替换软件时，先加密并验证 ZIP，再上传 Releases，同步更新 `assets/config.yml` 对应 `services[].items[]` 中的 `url`、`fileName`、`localSize`、`usage`、`note`、`tips` 和搜索 `keywords`。原有详细元数据已完整迁移，不再维护 `software.js`。密码不得写入网页、配置、文档或 Git。
 
-修改 CSS 或 JavaScript 后，同步更新 `index.html` 中对应资源的 `v` 参数（文件 SHA-256 的前 12 位），避免浏览器混用旧资源。
+演示用监控卡片、天气接口、额外页面和 PWA 已移除。不要覆盖原版 CSS 来做近似布局；更新 Homer 时一并替换带哈希文件名的资源及其字体，更新入口引用和来源记录。
 
 GitHub Pages 使用 `main` 分支根目录发布。提交更新后由 GitHub 自动部署。
 

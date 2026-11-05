@@ -1,46 +1,15 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="一份用得顺手的软件收藏。查找与下载日常使用的工具。">
-  <title>SoftShelf · 我的软件架</title>
-  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg?v=420fd7c47180">
-  <link rel="stylesheet" href="./style.css?v=242eabaa1ceb">
-  <script src="./software.js?v=82717e922b45" defer></script>
-  <script src="./app.js?v=7062e87b14a0" defer></script>
-</head>
-<body>
-  <a class="skip" href="#library">跳至软件列表</a>
-  <header class="header">
-    <div class="wrap header-inner">
-      <a class="brand" href="./" aria-label="SoftShelf 首页"><span class="brand-icon" aria-hidden="true">s.</span><span><small>SoftShelf</small><span class="brand-title">我的软件架</span></span></a>
-    </div>
-    <div class="navigation">
-      <div class="wrap navigation-inner">
-        <button id="menu" class="icon-button menu-button" aria-label="展开导航菜单" aria-expanded="false" aria-controls="nav-content">☰</button>
-        <nav id="nav-content" aria-label="主导航">
-          <div class="nav-links"><a class="text-button" href="https://github.com/fanhuajin/soft-shelf" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">↗</span> GitHub</a><button id="about" class="text-button"><span aria-hidden="true">ⓘ</span> 关于</button><a class="text-button" href="#library"><span aria-hidden="true">↓</span> 软件库</a></div>
-          <div class="nav-tools">
-            <button id="theme" class="icon-button" aria-label="切换深色主题" title="切换主题">◐</button>
-            <button id="layout" class="icon-button" aria-label="切换为分栏布局" aria-pressed="false" title="切换布局"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="1"/><path d="M9 5v14M15 5v14"/></svg></button>
-            <div class="search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg><label class="sr-only" for="search">搜索软件</label><input id="search" type="search" placeholder="搜索" autocomplete="off"><kbd aria-hidden="true">/</kbd></div>
-          </div>
-        </nav>
-      </div>
-    </div>
-  </header>
-  <main class="wrap">
-    <section class="welcome" aria-labelledby="welcome-title"><h1 id="welcome-title"><span aria-hidden="true">↓</span> 欢迎来到我的软件架</h1><div class="welcome-body"><p>收藏常用的软件与工具，让顺手的工具随时可用。</p><p>点击软件卡片下载，点击右侧详情查看安装说明。软件包为加密 ZIP，解压密码不公开。</p></div></section>
-    <section id="library" class="library" aria-labelledby="library-title">
-      <div class="section-heading"><h2 id="library-title">软件库 <span id="total" class="library-count"></span></h2><span id="results" class="sr-only" role="status"></span></div>
-      <div class="toolbar"><div class="filters" role="group" aria-label="筛选软件"><button data-filter="all" aria-pressed="true">全部软件</button></div></div>
-      <div id="cards" class="groups"></div>
-      <div id="empty" class="empty" hidden><span aria-hidden="true">⌕</span><h3>这里暂时空空的</h3><p id="empty-text"></p><button id="reset" class="secondary">查看全部软件</button></div>
-    </section>
-  </main>
-  <footer class="footer"><div class="wrap footer-inner"><span>SoftShelf · 个人软件收藏 <span class="footer-credit"> / 样式参考 <a href="https://github.com/bastienwirtz/homer" target="_blank" rel="noopener noreferrer">Homer</a></span></span><a href="#" id="back-top" aria-label="回到顶部">↑</a></div></footer>
-  <dialog id="detail" aria-labelledby="dialog-title"><button id="close-dialog" class="icon-button dialog-close" aria-label="关闭弹窗">×</button><div id="dialog-content"></div></dialog>
-  <div id="toast" role="status" class="toast"></div>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover" />
+    <meta name="description" content="一份用得顺手的软件收藏。查找与下载日常使用的工具。" />
+    <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg?v=420fd7c47180" />
+    <title>SoftShelf · 我的软件架</title>
+    <script type="module" crossorigin src="./vendor/homer/index-B-z7anWl.js"></script>
+    <link rel="stylesheet" crossorigin href="./vendor/homer/index-ncMaiPrF.css" />
+  </head>
+  <body>
+    <div id="app-mount"></div>
+  </body>
 </html>
