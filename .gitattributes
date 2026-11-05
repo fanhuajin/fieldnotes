@@ -1,3 +1,2 @@
-# Keep vendored Homer runtime bytes identical to the upstream distribution.
-vendor/homer/*.js -text
-vendor/homer/*.css -text
+# Preserve original distribution CSS bytes.
+vendor/karakeep/chunks/*.css -text

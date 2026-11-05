@@ -1,19 +1,17 @@
 # SoftShelf
 
-一个简洁的个人软件收藏与下载页面，整理日常使用的写作、截图、远程、录屏、开发和网络工具。
-
-直接使用开源项目 [Homer](https://github.com/bastienwirtz/homer) [在线演示](https://homer-demo.netlify.app/) 的原版 CSS、JavaScript 和本地字体，通过配置替换为本项目的软件与下载内容。没有另写一套仿制样式。
+软件下载、网页收藏和项目的静态资源库，使用 [Karakeep](https://github.com/karakeep-app/karakeep) 演示站 v0.34.1 的原版 CSS、Inter 字体、Logo 图形和 Lucide 图标，名称改为 SoftShelf。
 
 [访问网站](https://fanhuajin.github.io/soft-shelf/)
 
-## 功能
+## 使用
 
-- 使用 Homer 原生搜索，匹配软件名称、用途、分类和标签；搜索结果合并展示。
-- 保留原生自动／浅色／深色主题切换、横排／分栏切换、悬停标签和手机端菜单。
-- 软件按「日常办公」「开发与网络」「视频创作」三组展示，默认横排；点击卡片下载，顶部「使用说明」查看解压与安装方式。
-- 分栏时同组卡片连成列表，横排时显示独立卡片；页脚固定在底部。
+- 搜索资源，点击标签筛选；按 `/` 聚焦搜索，`Esc` 关闭菜单、详情或清空搜索。
+- 卡片标题和封面下载或打开网站；右下角展开图标查看详情与安装说明。
+- 悬停显示右上角选择按钮；选中后底部出现操作栏，支持批量复制链接、收藏、归档、导出 JSON、全选和取消。触屏直接显示选择按钮。
+- View Options 支持四种布局、列数和显示选项；头像菜单切换浅色、深色或系统主题。
 
-主题和布局偏好由 Homer 保存在当前浏览器。按 `/` 聚焦搜索，`Esc` 清空并退出搜索，`Enter` 打开首个结果，`Alt+Enter` 在新窗口打开。搜索关键词同步到 URL，可复制分享。
+收藏、归档及显示偏好只保存在当前浏览器，不修改仓库、不跨设备同步。页面没有账户、在线编辑、爬虫或 AI 后端；新增内容通过静态配置维护。原版 Next.js 业务脚本依赖服务端，本站使用静态适配脚本承接交互。
 
 ## 软件与使用方式
 
@@ -41,28 +39,32 @@ Topaz Video AI 与剪映的原始 RAR 内容保持不变，外层 ZIP 与内层 
 
 请使用支持 AES-256 ZIP 的解压工具，例如 7-Zip 或 WinRAR。JMeter 运行包中的 `runtime`、`bin` 和 `lib` 等目录需要完整保留。
 
-Homer 需要通过 HTTP(S) 访问，不支持直接双击 `index.html`。本地预览可在项目目录运行 `npx http-server . -p 4173`，再访问 `http://localhost:4173`。页面默认从 Releases 下载软件包；本地 `downloads/` 仍保留已有加密附件副本，不纳入 Git。
-
 ## 维护与部署
 
-页面运行原版 Homer 静态发行资源，无需构建。
+无需构建，GitHub Pages 从 main 分支根目录发布。通过 HTTP(S) 访问，不能直接双击 HTML；本地可运行 `npx http-server . -p 4173`。
 
-- `assets/config.yml`：Homer 原生配置，使用 JSON 兼容的 YAML 格式；包含页头、说明、导航、分类和所有软件下载元数据。
-- `vendor/homer/`：演示站原版 CSS、JavaScript、字体及许可证。文件来源与 SHA-256 见 `vendor/homer/NOTICE.md`。
-- `assets/`：本地软件图标；`spacing.css` 仅调整内容间距，使用 8px 基准协调欢迎区、分组标题和卡片留白。
-- `downloads/`：加密软件包的本地副本，不纳入 Git。
+- `assets/resources.json`：唯一资源配置，包含 collections 与 items。
+- `app.js`、`lib/resources.js`：静态交互、筛选和配置校验。
+- `style.css`：布局适配、悬浮操作栏及图标封面。
+- `vendor/karakeep/`：原版样式、字体、图标与许可证，来源及哈希见 [NOTICE.md](vendor/karakeep/NOTICE.md)。
+- `assets/`：本地软件图标与 Logo。
+- `downloads/`：已有加密包本地副本，不纳入 Git。
 
-新增或替换软件时，先加密并验证 ZIP，再上传 Releases，同步更新 `assets/config.yml` 对应 `services[].items[]` 中的 `url`、`fileName`、`localSize`、`usage`、`note`、`tips` 和搜索 `keywords`。原有详细元数据已完整迁移，不再维护 `software.js`。密码不得写入网页、配置、文档或 Git。
+新增资源可在 items 添加：
 
-演示用监控卡片、天气接口、额外页面和 PWA 已移除。不要覆盖原版 CSS 来做近似布局；更新 Homer 时一并替换带哈希文件名的资源及其字体，更新入口引用和来源记录。
+```json
+{"id":"example-site","type":"bookmark","name":"Example","url":"https://example.com/","image":"assets/example.png","description":"A useful website.","tags":["Tools"],"lists":["bookmarks"],"highlights":[]}
+```
 
-GitHub Pages 使用 `main` 分支根目录发布。提交更新后由 GitHub 自动部署。
+type 支持 software、bookmark、project；图片使用本地 assets/ 路径，lists 引用 collections[].id，同一资源可属于多个列表。现有 8 个网页收藏来自原配置中的官网地址，项目区包含本站 GitHub 仓库，软件分类按数量 5、4、2 排列。
 
-## 来源说明
+软件条目继续维护 fileName、localSize、platform、usage、note、tips 等原有元数据；上传 Releases 后更新 url。加密包与密码未更改，密码不得写入网页、配置或 Git。默认按配置顺序展示，Newest First 反转该顺序。
 
-软件及图标的权利属于各自所有者，本项目不代表相关软件的官方站点或合作方。
+## 来源与许可证
 
-网站 Logo、favicon 和三个分类图标采用 [Tabler Icons](https://github.com/tabler/tabler-icons) 的 MIT 开源图形，统一使用网站蓝色；来源、改动说明和许可证见 [assets/icons/README.md](assets/icons/README.md)。`assets/icons.css` 仅设置分类图标的尺寸、颜色和 SVG 蒙版，不覆盖 Homer 页面布局。
+静态前端遵循 AGPL-3.0，见 [LICENSE](LICENSE)。原版 CSS 与字体文件保持原样；Logo 图形提取自原版 SVG，仅替换文字名称；图标使用原版 Lucide 路径。Inter 遵循 OFL，Lucide 许可证另附。Preferences → Source Code 提供对应源码。
+
+软件、软件图标及商标属于各自权利人，软件包不包含在前端许可证授权中。本项目不代表软件官方站点或合作方。
 
 - [Typora](https://typora.io/)
 - [Snipaste](https://www.snipaste.com/)
