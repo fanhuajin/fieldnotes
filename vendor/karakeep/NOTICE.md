@@ -24,3 +24,5 @@ Karakeep: AGPL-3.0, LICENSE. Corresponding adapted source: https://github.com/fa
 ## Card interaction extraction (2026-11-05)
 
 The hover selector, drag-handle and selection overlay use the original utility-class strings from BulkEditSelectionOverlay, HoverActionBar and DragHandle in apps/web/components/dashboard/bookmarks/BookmarkLayoutAdaptingCard.tsx at upstream commit 6a1e71d67c10b2f56d55e8d771be0dd0c2cf6316. The demo DOM capture confirmed the selector/handle classes. Original Circle/CircleCheck/GripVertical icon paths are used. Backend session/store bindings are replaced by the existing static selection state; custom hover/selected-background CSS was removed.
+
+The selector/drag/bulk interaction extraction above is historical: those controls were removed at the user request. Current cards use original Lucide download/external-link icons in dedicated action links; card contents do not navigate. The unmodified original CSS remains in use.
