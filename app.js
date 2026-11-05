@@ -1,6 +1,7 @@
 import { icons } from './vendor/karakeep/icons.js?v=d835a7da8a17';
 import { selectResources, collectTags, validateCatalog } from './lib/resources.js?v=51dcfe1b3cf8';
 
+const basePath = new URL('.', import.meta.url).pathname;
 const $ = selector => document.querySelector(selector);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
 const store = {
@@ -30,7 +31,7 @@ function icon(name, size = 18) {
   const svg = icons['lucide-' + name] || icons['lucide-circle'];
   return svg.replace(/width="[^"]*"/, `width="${size}"`).replace(/height="[^"]*"/, `height="${size}"`).replace(/class="[^"]*"/, '').replace('<svg', '<svg class="resource-icon"');
 }
-function route(page, tag = '') { return '#/' + page + (tag ? '?tag=' + encodeURIComponent(tag) : ''); }
+function route(page, tag = '') { return basePath + page + (tag ? '?tag=' + encodeURIComponent(tag) : ''); }
 function saveView() { store.write('view-v6', Object.fromEntries(['layout', 'columns', 'notes', 'tags', 'title', 'fit', 'sort'].map(key => [key, state[key]]))); }
 function applyTheme() {
   const dark = state.theme === 'dark' || (state.theme === 'system' && media.matches);
@@ -61,7 +62,7 @@ function shell() {
   $('#app').innerHTML = `<div class="app-shell">
     <a class="skip-link" href="#main-content">跳转到资源</a>
     <header class="sticky left-0 right-0 top-0 z-50 flex h-16 w-full items-center justify-between bg-background p-4 shadow">
-      <a class="brand-slot" href="#/home" aria-label="Fieldnotes 首页" title="返回首页"><span class="brand-mark" aria-hidden="true">${$('#brand-source').innerHTML}</span><span class="brand-name">Fieldnotes</span></a>
+      <a class="brand-slot" href="${route('home')}" aria-label="Fieldnotes 首页" title="返回首页"><span class="brand-mark" aria-hidden="true">${$('#brand-source').innerHTML}</span><span class="brand-name">Fieldnotes</span></a>
       <div class="header-search"><label class="search-field bg-muted rounded-md">${icon('search',16)}<input id="global-search" type="search" placeholder="搜索标题、内容、网址和标签…" aria-label="搜索资源" autocomplete="off"><kbd>/</kbd></label>
         <button id="view-trigger" class="${btn} header-button" data-menu="view" aria-label="显示设置" title="显示设置" aria-haspopup="menu" aria-expanded="false">${icon('settings')}</button>
         <button id="sort-trigger" class="${btn} header-button" data-menu="sort" aria-label="资源排序" title="排序" aria-haspopup="menu" aria-expanded="false">${icon('arrow-down-wide-narrow')}</button>
@@ -81,7 +82,7 @@ function shell() {
     const params = new URLSearchParams();
     if (state.query) params.set('q', state.query);
     if (state.tag) params.set('tag', state.tag);
-    history.replaceState(null, '', '#/' + state.page + (params.size ? '?' + params : ''));
+    history.replaceState(null, '', basePath + state.page + (params.size ? '?' + params : ''));
     renderResources();
   });
   applyTheme();
@@ -105,7 +106,7 @@ function card(item, index) {
     </div></div></article>`;
 }
 function emptyState(title = '未找到资源', message = '请尝试其他关键词、标签或分类。') {
-  return `<div class="empty-state"><span class="text-muted-foreground">${icon('search-x',40)}</span><h2 class="text-lg font-medium">${esc(title)}</h2><p class="text-sm text-muted-foreground">${esc(message)}</p><a class="${btn} empty-home" href="#/home">查看全部资源</a></div>`;
+  return `<div class="empty-state"><span class="text-muted-foreground">${icon('search-x',40)}</span><h2 class="text-lg font-medium">${esc(title)}</h2><p class="text-sm text-muted-foreground">${esc(message)}</p><a class="${btn} empty-home" href="${route('home')}">查看全部资源</a></div>`;
 }
 function renderResources() {
   const items = visible();
@@ -130,10 +131,14 @@ function renderLists() {
 }
 function readLocation() {
   closeMenu(false);
-  const [path, query = ''] = location.hash.replace(/^#\/?/, '').split('?');
-  if (path.startsWith('preview/')) { location.replace('#/home'); return; }
+  if (location.hash.startsWith('#/')) history.replaceState(null, '', basePath + location.hash.slice(2));
+  let path = location.pathname.slice(basePath.length).replace(/\/$/, '');
+  const query = location.search.slice(1);
+  if (path.startsWith('preview/') || ['search','archive','highlights','favourites'].includes(path)) {
+    path = 'home';
+    history.replaceState(null, '', route('home') + location.search);
+  }
   const params = new URLSearchParams(query);
-  if (['search','archive','highlights','favourites'].includes(path)) { location.replace('#/home'+(query ? '?'+query : '')); return; }
   state.page = path || 'home'; state.query = params.get('q') || ''; state.tag = params.get('tag') || '';
   $('#global-search').value = state.query;
   renderNav();
@@ -188,16 +193,27 @@ function action(button) {
   }
 }
 async function init() {
-  const response = await fetch('./assets/resources.json', {cache:'no-cache'});
+  const response = await fetch(new URL('assets/resources.json', document.baseURI), {cache:'no-cache'});
   if (!response.ok) throw new Error('无法加载资源配置（'+response.status+').');
   catalog = validateCatalog(await response.json());
   shell();renderNav();renderResources();readLocation();
+  window.addEventListener('popstate',readLocation);
   window.addEventListener('hashchange',readLocation);
   media.addEventListener('change',applyTheme);
   window.addEventListener('resize',()=>{clearTimeout(redrawTimer);redrawTimer=setTimeout(()=>{closeMenu(false);if(!['tags','lists'].includes(state.page))renderResources();},100);});
   document.addEventListener('click',event=>{
     const button=event.target.closest('button,a');
     if (!button) {if(!event.target.closest('[role=menu]'))closeMenu(false);return;}
+    if (button.classList.contains('skip-link')) {event.preventDefault();$('#main-content').focus();return;}
+    if (button.tagName === 'A' && !event.defaultPrevented && event.button === 0 && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey && !button.target && !button.hasAttribute('download')) {
+      const url = new URL(button.href);
+      if (url.origin === location.origin && url.pathname.startsWith(basePath) && !url.hash) {
+        event.preventDefault();
+        history.pushState(null, '', url.pathname + url.search);
+        readLocation();
+        return;
+      }
+    }
     if (button.dataset.menu) {openMenu(button,button.dataset.menu);return;}
     if (!event.target.closest('[role=menu]'))closeMenu(false);
     if (button.dataset.close) $('#'+button.dataset.close).close();
