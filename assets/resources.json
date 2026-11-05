@@ -18,57 +18,6 @@
   "items": [
     {
       "type": "bookmark",
-      "id": "site-deepseek",
-      "name": "DeepSeek",
-      "url": "https://chat.deepseek.com/",
-      "description": "DeepSeek 在线对话入口。",
-      "tags": [
-        "AI",
-        "对话"
-      ],
-      "image": "assets/deepseek-dsh.png",
-      "cover": "assets/sites/deepseek-cover.jpg",
-      "lists": [
-        "bookmarks"
-      ],
-      "highlights": []
-    },
-    {
-      "type": "bookmark",
-      "id": "site-glm-coding",
-      "name": "智谱",
-      "url": "https://bigmodel.cn/glm-coding",
-      "description": "智谱 GLM Coding 页面，查看编程服务与相关使用信息。",
-      "tags": [
-        "AI",
-        "编程"
-      ],
-      "image": "assets/sites/glm.png",
-      "cover": "assets/sites/glm-coding-cover.jpg",
-      "lists": [
-        "bookmarks"
-      ],
-      "highlights": []
-    },
-    {
-      "type": "bookmark",
-      "id": "site-chatgpt",
-      "name": "ChatGPT",
-      "url": "https://chatgpt.com/",
-      "description": "ChatGPT 在线对话入口。",
-      "tags": [
-        "AI",
-        "对话"
-      ],
-      "image": "assets/sites/chatgpt.svg",
-      "lists": [
-        "bookmarks"
-      ],
-      "highlights": [],
-      "cover": "assets/sites/chatgpt-cover.png"
-    },
-    {
-      "type": "bookmark",
       "id": "site-westdata",
       "name": "西部数据 VPN 节点",
       "url": "https://wd-gold.net/clientarea.php",

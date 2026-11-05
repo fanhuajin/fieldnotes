@@ -58,7 +58,7 @@ Topaz Video AI 与剪映的原始 RAR 内容保持不变，外层 ZIP 与内层 
 {"id":"example-site","type":"bookmark","name":"Example","url":"https://example.com/","image":"assets/example.png","description":"A useful website.","tags":["Tools"],"lists":["bookmarks"],"highlights":[]}
 ```
 
-type 支持 software、bookmark；image 保存原软件或网站图标，cover 使用本地 assets/ 主题封面路径（可选），lists 引用 collections[].id，同一资源可属于多个列表。网页收藏已录入用户提供的 6 个链接，只继续录入用户提供的链接；不自动生成官网收藏。已移除项目分类与独立搜索页面，顶部搜索框直接筛选当前内容。所有软件统一归入「软件下载」，不再保留子分类入口。
+type 支持 software、bookmark；image 保存原软件或网站图标，cover 使用本地 assets/ 主题封面路径（可选），lists 引用 collections[].id，同一资源可属于多个列表。网页收藏保留用户提供的 3 个链接（西部数据 VPN 节点、图片中转站、Linux 站），只继续录入用户提供的链接；不自动生成官网收藏。已移除项目分类与独立搜索页面，顶部搜索框直接筛选当前内容。所有软件统一归入「软件下载」，不再保留子分类入口。
 
 软件条目继续维护 fileName、localSize、platform、usage、note、tips 等原有元数据；上传 Releases 后更新 url。加密包与密码未更改，密码不得写入网页、配置或 Git。默认「最新在前」，在每种资源类型内按配置顺序倒序展示；切换「最早在前」则按正序。网站始终在软件之前，用户选择的排序会保存在浏览器。
 
