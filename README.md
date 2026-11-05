@@ -8,6 +8,10 @@
 
 正式网站部署于 `fanhuajin.Github.io` 仓库的根目录，History 路由使用 `/home`、`/tags`、`/list/software` 等路径；本仓库保留应用源文件和下载 Releases。
 
+后续只维护本仓库。推送到 `main` 后，GitHub Actions 自动构建并同步网站文件到 `fanhuajin.Github.io`，再由 GitHub Pages 发布；进度见 [自动部署记录](https://github.com/fanhuajin/fieldnotes/actions/workflows/sync-root-site.yml)。部署仓库的网站文件会被同步覆盖，不在那里直接修改。CSS、JS 版本号按内容自动生成。
+
+自动同步使用本仓库的 Actions Secret `ROOT_SITE_DEPLOY_KEY`，对应部署仓库中允许写入的专用 Deploy Key。部署脚本为 `scripts/build-root-site.mjs`，本地执行 `node scripts/build-root-site.mjs` 可在 `.packaging/root-site` 生成部署文件。
+
 ## 使用
 
 - 搜索资源，点击标签筛选；按 `/` 聚焦搜索，`Esc` 关闭菜单、详情或清空搜索。
